@@ -1,6 +1,348 @@
 <!DOCTYPE html>
-<html>
-    <body>
-        Ready to roll
-    </body>
+<html lang="zxx">
+<head>
+    <title>Listto - Directory Listing HTML Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="css/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="css/daterangepicker.css">
+    <link rel="stylesheet" href="css/leaflet.css" type="text/css">
+    <link rel="stylesheet" href="css/map.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
+    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
+
+    <!-- Favicon icon -->
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+
+    <!-- Google fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,300,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Dosis%7CMontserrat:200,300,400,500,600,700,800,900%7CNunito+Sans:200,300,400,600,700,800,900">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script  src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script  src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script  src="js/html5shiv.min.js"></script>
+    <script  src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="page_loader"></div>
+
+<!-- Main header start -->
+<header class="main-header main-header-3 fixed-header2">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand logo" href="index.html">
+                <img src="img/logos/black-logo.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Index
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="index.html">Index 01</a></li>
+                            <li><a class="dropdown-item" href="index-2.html">Index 02</a></li>
+                            <li><a class="dropdown-item" href="index-3.html">Index 03</a></li>
+                            <li><a class="dropdown-item" href="index-4.html">Index 04</a></li>
+                            <li><a class="dropdown-item" href="index-5.html">Index 05</a></li>
+                            <li><a class="dropdown-item" href="index-6.html">Index 06</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Listings
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">List Layout</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="list-sidebar.html">Right Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="list-sidebar-2.html">Left Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="list-fullwidth.html">Full Width</a></li>
+                                    <li><a class="dropdown-item" href="list-sidebar-map.html">Full Width (Map)</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Grid Layout</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="grid-sidebar.html">Right Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="grid-sidebar-2.html">Left Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="grid-fullwidth.html">Full Width</a></li>
+                                    <li><a class="dropdown-item" href="grid-sidebar-map.html">Full Width (Map)</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Single Listing</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="listing-single.html">Single Listing 1</a></li>
+                                    <li><a class="dropdown-item" href="listing-single-2.html">Single Listing 2</a></li>
+                                    <li><a class="dropdown-item" href="listing-single-3.html">Single Listing 3</a></li>
+                                    <li><a class="dropdown-item" href="listing-single-4.html">Single Listing 4</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            User Panel
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="my-listings.html">My Listings</a></li>
+                            <li><a class="dropdown-item" href="favorited-listings.html">Favorited Listings</a></li>
+                            <li><a class="dropdown-item" href="messages.html">Messages</a></li>
+                            <li><a class="dropdown-item" href="bookings.html">Bookings</a></li>
+                            <li><a class="dropdown-item" href="add-listing.html">Add Listing</a></li>
+                            <li><a class="dropdown-item" href="my-profile.html">My Profile</a></li>
+                            <li> <a class="dropdown-item" href="my-invoices.html">Invoices</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown megamenu-li">
+                        <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                        <div class="dropdown-menu megamenu" aria-labelledby="dropdown01">
+                            <div class="megamenu-area">
+                                <div class="row sobuz">
+                                    <div class="col-sm-6 col-md-4 col-lg-4">
+                                        <div class="megamenu-section">
+                                            <h6 class="megamenu-title">Pages</h6>
+                                            <a class="dropdown-item" href="about.html">About Us</a>
+                                            <a class="dropdown-item" href="user-profile.html">User Profile</a>
+                                            <a class="dropdown-item" href="team.html">Our Team</a>
+                                            <a class="dropdown-item" href="pricing-tables.html">Pricing Tables</a>
+                                            <a class="dropdown-item" href="blog.html">Blog</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-4">
+                                        <div class="megamenu-section">
+                                            <h6 class="megamenu-title">Pages</h6>
+                                            <a class="dropdown-item" href="shop.html">Shop</a>
+                                            <a class="dropdown-item" href="gallery.html">Gallery</a>
+                                            <a class="dropdown-item" href="contact.html">Contact Us</a>
+                                            <a class="dropdown-item" href="elements.html">Elements</a>
+                                            <a class="dropdown-item" href="typography.html">Typography</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-4">
+                                        <div class="megamenu-section">
+                                            <h6 class="megamenu-title">Pages</h6>
+                                            <a class="dropdown-item" href="faq.html">Faq</a>
+                                            <a class="dropdown-item" href="how-it-work.html">How It Work</a>
+                                            <a class="dropdown-item" href="icon.html">Icons</a>
+                                            <a class="dropdown-item" href="coming-soon.html">Coming Soon</a>
+                                            <a class="dropdown-item" href="404.html">404 Page</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="login.html">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-listing.html" class="nav-link link-color link-color-2"><i class="flaticon-plus"></i> Add Listing</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Main header end -->
+
+<!-- Map content start -->
+<div class="map-content content-area container-fluid">
+    <div class="row">
+        <div class="col-lg-7 map-content-sidebar">
+            <div class="properties-map-search properties-pad2">
+                <div class="title-area">
+                    <h2 class="pull-left">Search</h2>
+                    <a class="show-more-options pull-right" data-toggle="collapse" data-target="#options-content">
+                        <i class="fa fa-plus-circle"></i> Show More Options
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="properties-map-search-content">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input class="form-control search-fields" placeholder="What are you looking for?">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input class="form-control search-fields" placeholder="Location">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <select class="selectpicker search-fields">
+                                    <option>All Categories</option>
+                                    <option>Hotels</option>
+                                    <option>Shops</option>
+                                    <option>Events</option>
+                                    <option>Fitness</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="range-slider">
+                                <div data-min="0" data-max="1000" data-unit="Km" data-min-name="min_price" data-max-name="max_price" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="options-content" class="collapse">
+                        <label class="margin-t-10">Filter</label>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox1" type="checkbox">
+                                    <label for="checkbox1">
+                                        Wifi Internet
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox2" type="checkbox">
+                                    <label for="checkbox2">
+                                        Air Condition
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox3" type="checkbox">
+                                    <label for="checkbox3">
+                                        Instant Book
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox4" type="checkbox">
+                                    <label for="checkbox4">
+                                        Swimming Pool
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox5" type="checkbox">
+                                    <label for="checkbox5">
+                                        Smoking allowed
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox6" type="checkbox">
+                                    <label for="checkbox6">
+                                        Window Covering
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox7" type="checkbox">
+                                    <label for="checkbox7">
+                                        Central Heating
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-theme checkbox-circle">
+                                    <input id="checkbox8" type="checkbox">
+                                    <label for="checkbox8">
+                                        Friendly workspace
+                                    </label>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-area">
+                    <h2 class="pull-left results-for">Results For : Listing</h2>
+                    <div class="pull-right btns-area">
+                        <a href="list-sidebar-map.html" class="change-view-btn active-view-btn"><i class="fa fa-th-list"></i></a>
+                        <a href="grid-sidebar-map.html" class="change-view-btn"><i class="fa fa-th-large"></i></a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="fetching-properties pad-0-15"></div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="row">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Map content end -->
+
+<!-- Full Page Search -->
+<div id="full-page-search">
+    <button type="button" class="close">×</button>
+    <form action="index.html#">
+        <input type="search" value="" placeholder="type keyword(s) here" />
+        <button type="submit" class="btn btn-sm button-theme">Search</button>
+    </form>
+</div>
+
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script  src="js/bootstrap-submenu.js"></script>
+<script  src="js/rangeslider.js"></script>
+<script  src="js/jquery.mb.YTPlayer.js"></script>
+<script  src="js/bootstrap-select.min.js"></script>
+<script  src="js/jquery.easing.1.3.js"></script>
+<script  src="js/jquery.scrollUp.js"></script>
+<script  src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script  src="js/leaflet.js"></script>
+<script  src="js/leaflet-providers.js"></script>
+<script  src="js/leaflet.markercluster.js"></script>
+<script  src="js/moment.min.js"></script>
+<script  src="js/daterangepicker.min.js"></script>
+<script  src="js/dropzone.js"></script>
+<script  src="js/slick.min.js"></script>
+<script  src="js/jquery.filterizr.js"></script>
+<script  src="js/jquery.magnific-popup.min.js"></script>
+<script  src="js/jquery.countdown.js"></script>
+<script  src="js/maps.js"></script>
+<script  src="js/app.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script  src="js/ie10-viewport-bug-workaround.js"></script>
+<!-- Custom javascript -->
+<script  src="js/ie10-viewport-bug-workaround.js"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-89110077-3', 'auto');
+    ga('send', 'pageview');
+</script>
+
+<script>
+    var latitude = 51.541216;
+    var longitude = -0.095678;
+    var providerName = 'Hydda.Full';
+    generateMap(latitude, longitude, providerName);
+</script>
+</body>
 </html>
