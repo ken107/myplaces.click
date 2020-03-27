@@ -1,0 +1,24 @@
+{
+  "name": "webservices",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index",
+    "deploy": "rsync -avz --exclude=node_modules --exclude='.*' --exclude=src ./ testingmap.com:webservices/",
+    "start-server": "while true; do npm i --only=prod; node dist/index >log; done",
+    "restart-server": "ssh testingmap.com curl http://localhost/webservices/shutdown"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.3",
+    "typescript": "^3.8.3"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "testmap main website",
+  "scripts": {
+    "deploy": "rsync -avz dist/ testingmap.com:htdocs/"
+  },
+  "license": "ISC"
+}
