@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <title>Listto - Directory Listing HTML Template</title>
+    <title>COVID-19 Testing Locations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -62,14 +62,26 @@
 <div class="map-content content-area container-fluid">
     <div class="row no-gutters">
         <div class="col-12 d-lg-none p-3">
-            <div bind-view="MapSearch"></div>
+            <div bind-view="MapSearch"
+                bind-param-api-ready="#map.apiReady"
+                bind-param-bounds="#map.bounds"
+                bind-event-places-changed="this.onPlacesChanged(event.data)"
+                bind-event-locate-me="this.locateMe()"></div>
         </div>
         <div class="col-lg-6">
-            <div id="map"></div>
+            <div bind-view="TheMap"
+                bind-param-api-ready="#map.apiReady"
+                bind-param-places="#map.places"
+                bind-statement-1="$(thisElem).css('height', #map.height)"
+                bind-event-bounds-changed="#map.bounds = event.data"></div>
         </div>
         <div class="col-lg-6 map-content-sidebar p-3">
             <div class="d-none d-lg-block">
-                <div bind-view="MapSearch"></div>
+                <div bind-view="MapSearch"
+                    bind-param-api-ready="#map.apiReady"
+                    bind-param-bounds="#map.bounds"
+                    bind-event-places-changed="this.onPlacesChanged(event.data)"
+                    bind-event-locate-me="this.locateMe()"></div>
             </div>
             <div bind-view="LocationDetails"></div>
         </div>
@@ -133,13 +145,40 @@
         })
     })
 
-    function initMap() {
-      var uluru = {lat: -25.344, lng: 131.036};
-      var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
-      var marker = new google.maps.Marker({position: uluru, map: map});
+    map = {
+        apiReady: false,
+        bounds: null,
+        places: null,
+        height: null,
+    };
+    function onMapApiReady() {
+        map.apiReady = true;
+    }
+    function onPlacesChanged(places) {
+        map.places = Array.isArray(places) ? places : [places];
+    }
+
+    $(window).resize(onWindowResized).trigger("resize");
+    function onWindowResized() {
+        map.height = $(this).height() - 110;
+    }
+
+    function locateMe() {
+        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(onGeolocated, console.error);
+    }
+    function onGeolocated(position) {
+        map.places = [{
+            icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            geometry: {
+                location: {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+            }
+        }]
     }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADUacVOXYEOQAPQvDbSphQvFfNbKcVUhY&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
 
 </body>
 </html>

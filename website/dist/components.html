@@ -20,12 +20,16 @@
 
 
 
-<div data-class="MapSearch" class="properties-map-search" bind-var-toggle-filters="0">
+<div data-class="MapSearch" class="properties-map-search"
+    bind-var-toggle-filters="0"
+    bind-statement-1="if (#searchBox && #bounds) #searchBox.setBounds(#bounds)">
     <div class="properties-map-search-content">
         <div class="input-group">
-            <input class="form-control search-fields" placeholder="My Location">
+            <input class="form-control search-fields" placeholder="My Location"
+                bind-statement-1="if (#apiReady) this.initSearchBox(thisElem)">
             <div class="input-group-append">
-                <button type="button" class="btn btn-secondary">Go</button>
+                <button type="button" class="btn btn-secondary"
+                    bind-event-click="this.onSubmit()">Go</button>
             </div>
         </div>
         <div class="mt-3">
@@ -91,5 +95,12 @@
             </div>
         </div>
     </div>
+</div>
+
+
+
+<div data-class="TheMap"
+    bind-statement-1="if (#apiReady) this.init(thisElem)"
+    bind-statement-2="if (#mapReady && #places) this.setPlaces(#places)">
 </div>
 
