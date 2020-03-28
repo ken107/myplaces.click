@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "testmap main website",
   "scripts": {
-    "deploy": "rsync -avz dist/ testingmap.com:htdocs/"
+    "start": "http-server dist",
+    "deploy": "rsync -avz --delete dist/ testingmap.com:htdocs/"
   },
   "license": "ISC"
 }
