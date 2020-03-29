@@ -36,15 +36,43 @@ function shutdownNow() {
     server.close();
     dbs.shutdown();
 }
-function getTestLocations(req, res) {
-    res.json([]);
+async function getTestLocations(req, res, next) {
+    try {
+        assert_1.default(req.query.northEast && req.query.southWest, "Missing args");
+        const result = await db.execute(`
+            SELECT name,
+                address,
+                address2,
+                city,
+                state,
+                postalCode,
+                countryCode,
+                ST_Latitude(lngLat) AS lat,
+                ST_Longitude(lngLat) AS lng,
+                source
+            FROM
+                testLocations
+            WHERE
+                MBRCovers( ST_SRID( MultiPoint( Point(?,?), Point(?,?) ), 4326 ), lngLat )
+            `, [
+            req.query.northEast.lng,
+            req.query.northEast.lat,
+            req.query.southWest.lng,
+            req.query.southWest.lat
+        ]);
+        res.json(result);
+    }
+    catch (err) {
+        next(err);
+    }
 }
 async function addTestLocation(req, res, next) {
     try {
         assert_1.default(req.body.name && req.body.lat && req.body.lng && req.body.source, "Missing args");
         await db.execute(`
-            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, latLng, source)
-            VALUES (?, ?, ?, ?, ?, ?, ?, POINT(?, ?), ?)`, [
+            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, lngLat, source)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?)
+            `, [
             req.body.name,
             req.body.address,
             req.body.address2,
@@ -52,8 +80,8 @@ async function addTestLocation(req, res, next) {
             req.body.state,
             req.body.postalCode,
             req.body.countryCode,
-            req.body.lat,
             req.body.lng,
+            req.body.lat,
             req.body.source
         ]);
         res.end();

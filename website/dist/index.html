@@ -66,12 +66,13 @@
                 bind-param-api-ready="#map.apiReady"
                 bind-param-bounds="#map.bounds"
                 bind-param-progress="#progress"
-                bind-event-places-changed="this.onPlacesChanged(event.data)"
+                bind-event-place-changed="this.setCenter(event.data)"
                 bind-event-locate-me="this.locateMe()"></div>
         </div>
         <div class="col-lg-6">
             <div bind-view="TheMap"
                 bind-param-api-ready="#map.apiReady"
+                bind-param-center="#map.center"
                 bind-param-places="#map.places"
                 bind-statement-1="$(thisElem).css('height', #map.height)"
                 bind-event-bounds-changed="#map.bounds = event.data"></div>
@@ -82,7 +83,7 @@
                     bind-param-api-ready="#map.apiReady"
                     bind-param-bounds="#map.bounds"
                     bind-param-progress="#progress"
-                    bind-event-places-changed="this.onPlacesChanged(event.data)"
+                    bind-event-place-changed="this.setCenter(event.data)"
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
             <div bind-view="LocationDetails"></div>
@@ -152,12 +153,13 @@
         bounds: null,
         places: null,
         height: null,
+        center: null,
     };
     function onMapApiReady() {
         map.apiReady = true;
     }
-    function onPlacesChanged(places) {
-        map.places = Array.isArray(places) ? places : [places];
+    function setCenter(place) {
+        map.center = place;
     }
 
     $(window).resize(onWindowResized).trigger("resize");
@@ -174,21 +176,43 @@
     }
     function onLocateSuccess(position) {
         progress--;
-        map.places = [{
+        map.center = {
             geometry: {
                 location: {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
             }
-        }]
+        }
     }
     function onLocateFail(err) {
         progress--;
         console.error(err);
     }
 
+    var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
     progress = 0;
+    error = null;
+    function refresh() {
+        progress++;
+        $.ajax({
+            url: serviceUrl + "/get-test-locations",
+            data: {
+                northEast: map.bounds.getNorthEast().toJSON(),
+                southWest: map.bounds.getSouthWest().toJSON()
+            },
+            dataType: "json",
+            success: function(result) {
+                map.places = result;
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                error = {message: xhr.responseText || errorThrown || textStatus};
+            },
+            complete: function() {
+                progress--;
+            }
+        })
+    }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
 

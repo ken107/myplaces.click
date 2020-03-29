@@ -102,6 +102,7 @@
 
 <div data-class="TheMap"
     bind-statement-1="if (#apiReady) this.init(thisElem)"
+    bind-statement-3="if (#mapReady && #center) this.setCenter(#center)"
     bind-statement-2="if (#mapReady && #places) this.setPlaces(#places)">
 </div>
 

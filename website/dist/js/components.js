@@ -11,7 +11,8 @@ function MapSearch(viewRoot) {
         this.searchBox.addListener('places_changed', onPlacesChanged.bind(this));
     }
     function onPlacesChanged() {
-        $(viewRoot).triggerHandler("places-changed", this.searchBox.getPlaces());
+        var places = this.searchBox.getPlaces();
+        if (places.length) $(viewRoot).triggerHandler("place-changed", places[0]);
     }
     this.onLocateMe = function() {
         $(viewRoot).find("input.search-fields").val("");
@@ -23,7 +24,8 @@ function MapSearch(viewRoot) {
 
 function TheMap(viewRoot) {
     var map;
-    var marker;
+    var centerMarker;
+    var placeMarkers;
     this.mapReady = false;
     this.init = function(elem) {
         map = new google.maps.Map(elem, {
@@ -33,15 +35,13 @@ function TheMap(viewRoot) {
         map.addListener('bounds_changed', function() {
             $(viewRoot).triggerHandler("bounds-changed", map.getBounds());
         });
-        marker = new google.maps.Marker({
+        centerMarker = new google.maps.Marker({
             map: map,
-            anchorPoint: new google.maps.Point(0, 0)
+            icon: "/img/azure-pin.png",
         });
         this.mapReady = true;
     }
-    this.setPlaces = function(places) {
-        if (places.length) {
-            var place = places[0];
+    this.setCenter = function(place) {
             if (place.geometry.viewport) {
                 map.fitBounds(place.geometry.viewport);
             }
@@ -49,7 +49,17 @@ function TheMap(viewRoot) {
                 map.setCenter(place.geometry.location);
                 map.setZoom(12);
             }
-            marker.setPosition(place.geometry.location);
+            centerMarker.setPosition(place.geometry.location);
+    }
+    this.setPlaces = function(places) {
+        if (placeMarkers) {
+            for (var i=0; i<placeMarkers.length; i++) placeMarkers[i].setMap(null);
         }
+        placeMarkers = places.map(function(place) {
+            return new google.maps.Marker({
+                map: map,
+                position: new google.maps.LatLng(place.lat, place.lng)
+            })
+        })
     }
 }
