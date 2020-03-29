@@ -29,7 +29,7 @@
                 bind-statement-1="if (#apiReady) this.initSearchBox(thisElem)">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary" bind-event-click="this.onLocateMe()">
-                    <i class="fa fa-location-arrow" bind-statement-1="$(thisElem).toggleClass('spin', !!#progress)"></i>
+                    <i class="fa fa-location-arrow"></i>
                 </button>
             </div>
         </div>
@@ -37,6 +37,9 @@
             <a class="show-more-options pull-right" bind-event-click="#toggleFilters++">
                 <i class="fa fa-plus-circle"></i> Show More Options
             </a>
+            <div bind-statement-1="$(thisElem).toggle(!!#progress)">
+                <div class="spinner" style="border-color: #888"></div>
+            </div>
         </div>
         <div bind-statement-1="if (#toggleFilters) $(thisElem).slideToggle(); else $(thisElem).hide()">
             <label class="margin-t-10">Filter</label>

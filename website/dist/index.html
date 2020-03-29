@@ -197,10 +197,9 @@
     var refreshTimer = null;
     function refreshPlaces() {
         clearTimeout(refreshTimer);
-        refreshTimer = setTimeout(refreshPlacesNow, 1000);
+        refreshTimer = setTimeout(refreshPlacesNow, 500);
     }
     function refreshPlacesNow() {
-        console.log("Refreshing locations");
         progress++;
         $.ajax({
             url: serviceUrl + "/get-test-locations",

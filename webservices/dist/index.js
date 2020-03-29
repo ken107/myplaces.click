@@ -40,7 +40,8 @@ async function getTestLocations(req, res, next) {
     try {
         assert_1.default(req.query.northEast && req.query.southWest, "Missing args");
         const result = await db.execute(`
-            SELECT name,
+            SELECT id,
+                name,
                 address,
                 address2,
                 city,

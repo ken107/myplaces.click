@@ -25,7 +25,7 @@ function MapSearch(viewRoot) {
 function TheMap(viewRoot) {
     var map;
     var centerMarker;
-    var placeMarkers;
+    var placeMarkers = {};
     this.mapReady = false;
     this.init = function(elem) {
         map = new google.maps.Map(elem, {
@@ -52,14 +52,14 @@ function TheMap(viewRoot) {
             centerMarker.setPosition(place.geometry.location);
     }
     this.setPlaces = function(places) {
-        if (placeMarkers) {
-            for (var i=0; i<placeMarkers.length; i++) placeMarkers[i].setMap(null);
-        }
-        placeMarkers = places.map(function(place) {
-            return new google.maps.Marker({
+        var newMarkers = {};
+        places.forEach(function(place) {
+            newMarkers[place.id] = placeMarkers[place.id] || new google.maps.Marker({
                 map: map,
                 position: new google.maps.LatLng(place.lat, place.lng)
             })
         })
+        for (var id in placeMarkers) if (!newMarkers[id]) placeMarkers[id].setMap(null);
+        placeMarkers = newMarkers;
     }
 }
