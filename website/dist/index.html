@@ -47,7 +47,7 @@
     <script  src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body bind-statement-1="if (#map.bounds) refreshPlaces()">
 <div class="page_loader"></div>
 
 <!-- Main header start -->
@@ -193,7 +193,14 @@
     var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
     progress = 0;
     error = null;
-    function refresh() {
+
+    var refreshTimer = null;
+    function refreshPlaces() {
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(refreshPlacesNow, 1000);
+    }
+    function refreshPlacesNow() {
+        console.log("Refreshing locations");
         progress++;
         $.ajax({
             url: serviceUrl + "/get-test-locations",
