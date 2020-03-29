@@ -2,16 +2,29 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
+const assert_1 = __importDefault(require("assert"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
+const express_1 = __importDefault(require("express"));
+const config_1 = __importDefault(require("./config"));
+const dbs = __importStar(require("./dbs"));
 const app = express_1.default();
 app.set("trust proxy", 1);
-app.use(cors_1.default());
+app.use(cors_1.default(), body_parser_1.default.json());
 app.get("/", (req, res) => res.end("Good"));
 app.get("/shutdown", shutdown);
 app.get("/get-test-locations", getTestLocations);
-const server = app.listen(8080, () => console.log("Server started"));
+app.post("/add-test-location", addTestLocation);
+const server = app.listen(config_1.default.port, () => console.log("Server started on", config_1.default.port));
+const db = dbs.getConnection("testingmap");
 function shutdown(req, res) {
     if (!req.ip.endsWith("127.0.0.1"))
         return res.sendStatus(404);
@@ -21,7 +34,31 @@ function shutdown(req, res) {
 function shutdownNow() {
     console.log("Shutdown requested");
     server.close();
+    dbs.shutdown();
 }
 function getTestLocations(req, res) {
     res.json([]);
+}
+async function addTestLocation(req, res, next) {
+    try {
+        assert_1.default(req.body.name && req.body.lat && req.body.lng && req.body.source, "Missing args");
+        await db.execute(`
+            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, latLng, source)
+            VALUES (?, ?, ?, ?, ?, ?, ?, POINT(?, ?), ?)`, [
+            req.body.name,
+            req.body.address,
+            req.body.address2,
+            req.body.city,
+            req.body.state,
+            req.body.postalCode,
+            req.body.countryCode,
+            req.body.lat,
+            req.body.lng,
+            req.body.source
+        ]);
+        res.end();
+    }
+    catch (err) {
+        next(err);
+    }
 }

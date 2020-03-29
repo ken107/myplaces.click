@@ -3,6 +3,8 @@ declare const _default: {
         host: string;
         user: string;
         pass: string;
+        charset: string;
+        timezone: string;
     };
     port: number;
 };
