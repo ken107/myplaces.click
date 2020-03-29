@@ -65,6 +65,7 @@
             <div bind-view="MapSearch"
                 bind-param-api-ready="#map.apiReady"
                 bind-param-bounds="#map.bounds"
+                bind-param-progress="#progress"
                 bind-event-places-changed="this.onPlacesChanged(event.data)"
                 bind-event-locate-me="this.locateMe()"></div>
         </div>
@@ -80,6 +81,7 @@
                 <div bind-view="MapSearch"
                     bind-param-api-ready="#map.apiReady"
                     bind-param-bounds="#map.bounds"
+                    bind-param-progress="#progress"
                     bind-event-places-changed="this.onPlacesChanged(event.data)"
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
@@ -163,12 +165,16 @@
         map.height = $(this).height() - 110;
     }
 
+    $(locateMe)
     function locateMe() {
-        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(onGeolocated, console.error);
+        if (navigator.geolocation) {
+            progress++;
+            navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFail);
+        }
     }
-    function onGeolocated(position) {
+    function onLocateSuccess(position) {
+        progress--;
         map.places = [{
-            icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
             geometry: {
                 location: {
                     lat: position.coords.latitude,
@@ -177,6 +183,12 @@
             }
         }]
     }
+    function onLocateFail(err) {
+        progress--;
+        console.error(err);
+    }
+
+    progress = 0;
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
 

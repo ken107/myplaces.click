@@ -13,7 +13,8 @@ function MapSearch(viewRoot) {
     function onPlacesChanged() {
         $(viewRoot).triggerHandler("places-changed", this.searchBox.getPlaces());
     }
-    this.onSubmit = function() {
+    this.onLocateMe = function() {
+        $(viewRoot).find("input.search-fields").val("");
         $(viewRoot).triggerHandler("locate-me");
     }
 }
@@ -22,59 +23,33 @@ function MapSearch(viewRoot) {
 
 function TheMap(viewRoot) {
     var map;
-    var markers = [];
+    var marker;
     this.mapReady = false;
-
     this.init = function(elem) {
         map = new google.maps.Map(elem, {
             center: new google.maps.LatLng(0, 0),
             zoom: 2,
-            maxZoom: 13,
         });
         map.addListener('bounds_changed', function() {
             $(viewRoot).triggerHandler("bounds-changed", map.getBounds());
         });
+        marker = new google.maps.Marker({
+            map: map,
+            anchorPoint: new google.maps.Point(0, 0)
+        });
         this.mapReady = true;
     }
-
     this.setPlaces = function(places) {
-        // Clear markers
-        for (var i=0; i<markers.length; i++) markers[i].setMap(null);
-        markers = [];
-
-        if (places.length == 0) return;
-
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-            if (!place.geometry) {
-                console.log("Returned place contains no geometry");
-                return;
-            }
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            }));
-
+        if (places.length) {
+            var place = places[0];
             if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
+                map.fitBounds(place.geometry.viewport);
             }
-        });
-
-        map.fitBounds(bounds);
+            else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(12);
+            }
+            marker.setPosition(place.geometry.location);
+        }
     }
 }

@@ -28,8 +28,9 @@
             <input class="form-control search-fields" placeholder="My Location"
                 bind-statement-1="if (#apiReady) this.initSearchBox(thisElem)">
             <div class="input-group-append">
-                <button type="button" class="btn btn-secondary"
-                    bind-event-click="this.onSubmit()">Go</button>
+                <button type="button" class="btn btn-secondary" bind-event-click="this.onLocateMe()">
+                    <i class="fa fa-location-arrow" bind-statement-1="$(thisElem).toggleClass('spin', !!#progress)"></i>
+                </button>
             </div>
         </div>
         <div class="mt-3">
