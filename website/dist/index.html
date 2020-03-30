@@ -185,10 +185,7 @@
     function onLocateSuccess(position) {
         progress--;
         setCenter({
-                location: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
+            location: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         })
     }
     function onLocateFail(err) {
@@ -212,11 +209,11 @@
             data: {
                 northEast: map.bounds.getNorthEast().toJSON(),
                 southWest: map.bounds.getSouthWest().toJSON(),
-                myLocation: map.center.location,
+                myLocation: map.center.location.toJSON()
             },
             dataType: "json",
             success: function(result) {
-                map.places = result;
+                map.places = result.sort(function(a,b) {return a.distance-b.distance});
             },
             error: function(xhr, textStatus, errorThrown) {
                 error = {message: xhr.responseText || errorThrown || textStatus};

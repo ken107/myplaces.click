@@ -33,7 +33,6 @@ function TheMap(viewRoot) {
     var map;
     var centerMarker;
     var placeMarkers = {};
-    var pinLabels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").reverse();
     var infoWindow;
     this.mapReady = false;
     this.init = function(elem) {
@@ -69,13 +68,13 @@ function TheMap(viewRoot) {
     }
     this.setPlaces = function(places) {
         var newMarkers = {};
-        places.forEach(function(place) {
+        places.forEach(function(place, index) {
             newMarkers[place.id] = placeMarkers[place.id] || newMarker(place);
+            newMarkers[place.id].setLabel("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index));
         })
         for (var id in placeMarkers) {
             if (!newMarkers[id]) {
                 placeMarkers[id].setMap(null);
-                pinLabels.push(placeMarkers[id].getLabel());
             }
         }
         placeMarkers = newMarkers;
@@ -83,7 +82,6 @@ function TheMap(viewRoot) {
     function newMarker(place) {
         var marker = new google.maps.Marker({
             map: map,
-            label: pinLabels.pop(),
             position: new google.maps.LatLng(place.lat, place.lng)
         })
         marker.addListener('click', function() {
