@@ -20,7 +20,7 @@
 
 
 
-<div data-class="MapSearch" class="properties-map-search"
+<div data-class="MapSearch" class="properties-map-search clearfix"
     bind-var-toggle-filters="0"
     bind-statement-1="if (#searchBox && #bounds) #searchBox.setBounds(#bounds)">
     <div class="properties-map-search-content">
@@ -107,5 +107,24 @@
     bind-statement-1="if (#apiReady) this.init(thisElem)"
     bind-statement-3="if (#mapReady && #center) this.setCenter(#center)"
     bind-statement-2="if (#mapReady && #places) this.setPlaces(#places)">
+</div>
+
+
+
+<div data-class="LocationDetails" class="location-details">
+    <div class="card mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
+        <div class="card-body">
+            <div class="pull-right ml-2 pin">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
+            <h5 class="card-title">{{#place.name}}</h5>
+            <div class="card-text">
+                <div>{{#place.address}}</div>
+                <div>{{#place.address2}}</div>
+                <div>{{#place.city}}<span bind-statement-1="$(thisElem).toggle(!!#place.city && !!#place.state)">, </span>{{#place.state}} {{#place.postalCode}}</div>
+                <a target="_blank" style="color: blue; text-decoration: underline;" bind-statement-1="$(thisElem).attr('href', #place.source)">source</a>
+            </div>
+            <button type="button" class="btn btn-primary btn-directions"
+                bind-event-click="this.showDirections(#place)">Directions</button>
+        </div>
+    </div>
 </div>
 

@@ -16,3 +16,21 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+
+.location-details {
+    position: relative;
+}
+.location-details .pin {
+    width: 27px;
+    height: 43px;
+    padding-top: 3px;
+    text-align: center;
+    background-image: url(/img/spotlight-poi-dotless2.png);
+}
+.location-details .btn-directions {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}
