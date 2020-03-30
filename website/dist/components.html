@@ -116,7 +116,10 @@
 <div data-class="LocationDetails" class="location-details">
     <div class="card bg-light mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
         <div class="card-body">
-            <div class="pull-right ml-2 pin">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
+            <div class="ml-2 pull-right text-right">
+                <div class="pin">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
+                <div>{{printDistance(#place.distance, true)}}</div>
+            </div>
             <h5 class="card-title">{{#place.name}}</h5>
             <div class="card-text">
                 <div>{{#place.address}}</div>

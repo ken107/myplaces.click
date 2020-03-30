@@ -33,7 +33,7 @@ function shutdownNow() {
 
 async function getTestLocations(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-        assert(req.query.northEast && req.query.southWest, "Missing args");
+        assert(req.query.northEast && req.query.southWest && req.query.myLocation, "Missing args");
         const result = await db.execute(`
             SELECT id,
                 name,
@@ -45,6 +45,7 @@ async function getTestLocations(req: express.Request, res: express.Response, nex
                 countryCode,
                 ST_Latitude(lngLat) AS lat,
                 ST_Longitude(lngLat) AS lng,
+                ST_Distance(lngLat, ST_SRID(POINT(?,?), 4326)) AS distance,
                 source,
                 sourceUrl
             FROM
@@ -52,6 +53,8 @@ async function getTestLocations(req: express.Request, res: express.Response, nex
             WHERE
                 MBRCovers( ST_SRID( MultiPoint( Point(?,?), Point(?,?) ), 4326 ), lngLat )
             `, [
+                req.query.myLocation.lng,
+                req.query.myLocation.lat,
                 req.query.northEast.lng,
                 req.query.northEast.lat,
                 req.query.southWest.lng,

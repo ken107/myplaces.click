@@ -1,4 +1,11 @@
 
+function printDistance(meters, abbreviateUnit) {
+    return Number(meters / 1609.34).toFixed(1) + (abbreviateUnit ? " mi" : " miles");
+}
+
+
+
+
 function NavBar() {
 }
 
@@ -50,15 +57,15 @@ function TheMap(viewRoot) {
         infoWindow = new google.maps.InfoWindow();
         this.mapReady = true;
     }
-    this.setCenter = function(place) {
-            if (place.geometry.viewport) {
-                map.fitBounds(place.geometry.viewport);
+    this.setCenter = function(geometry) {
+            if (geometry.viewport) {
+                map.fitBounds(geometry.viewport);
             }
             else {
-                map.setCenter(place.geometry.location);
+                map.setCenter(geometry.location);
                 map.setZoom(12);
             }
-            centerMarker.setPosition(place.geometry.location);
+            centerMarker.setPosition(geometry.location);
     }
     this.setPlaces = function(places) {
         var newMarkers = {};
@@ -94,6 +101,7 @@ function TheMap(viewRoot) {
         if (place.address) $("<div>").text(place.address).appendTo(div);
         if (place.address2) $("<div>").text(place.address2).appendTo(div);
         if (place.city || place.state) $("<div>").text(place.city + (place.city && place.state ? ", " : "") + place.state + " " + place.postalCode).appendTo(div);
+        $("<div class='text-muted font-italic'>").text(printDistance(place.distance)).appendTo(div);
         $("<a class='d-block mt-1'>").css({color: "blue", textDecoration: "underline"}).text("Join Discussion").click(joinDiscussion).appendTo(div);
         return div;
     }

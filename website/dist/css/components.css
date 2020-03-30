@@ -23,6 +23,7 @@
     position: relative;
 }
 .location-details .pin {
+    display: inline-block;
     width: 27px;
     height: 43px;
     padding-top: 3px;

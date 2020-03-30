@@ -47,7 +47,7 @@
     <script  src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-<body bind-statement-1="if (#map.bounds) refreshPlaces()">
+<body bind-statement-1="if (#map.bounds && #map.center) refreshPlaces()">
 <div class="page_loader"></div>
 
 <!-- Main header start -->
@@ -67,7 +67,7 @@
                 bind-param-api-ready="#map.apiReady"
                 bind-param-bounds="#map.bounds"
                 bind-param-progress="#progress"
-                bind-event-place-changed="this.setCenter(event.data)"
+                bind-event-place-changed="this.setCenter(event.data.geometry)"
                 bind-event-locate-me="this.locateMe()"></div>
         </div>
         <div class="col-lg-7">
@@ -85,7 +85,7 @@
                     bind-param-api-ready="#map.apiReady"
                     bind-param-bounds="#map.bounds"
                     bind-param-progress="#progress"
-                    bind-event-place-changed="this.setCenter(event.data)"
+                    bind-event-place-changed="this.setCenter(event.data.geometry)"
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
             <div bind-view="LocationDetails"
@@ -166,8 +166,8 @@
     function onMapApiReady() {
         map.apiReady = true;
     }
-    function setCenter(place) {
-        map.center = place;
+    function setCenter(geometry) {
+        map.center = geometry;
     }
 
     $(window).resize(onWindowResized).trigger("resize");
@@ -184,14 +184,12 @@
     }
     function onLocateSuccess(position) {
         progress--;
-        map.center = {
-            geometry: {
+        setCenter({
                 location: {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
-            }
-        }
+        })
     }
     function onLocateFail(err) {
         progress--;
@@ -213,7 +211,8 @@
             url: serviceUrl + "/get-test-locations",
             data: {
                 northEast: map.bounds.getNorthEast().toJSON(),
-                southWest: map.bounds.getSouthWest().toJSON()
+                southWest: map.bounds.getSouthWest().toJSON(),
+                myLocation: map.center.location,
             },
             dataType: "json",
             success: function(result) {
