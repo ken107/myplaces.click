@@ -91,7 +91,7 @@ function TheMap(viewRoot) {
         return marker;
     }
     function getInfoWindowContent(place) {
-        function joinDiscussion(place) {
+        function joinDiscussion() {
             $(viewRoot).triggerHandler("join-discussion", place);
         }
         var div = $("<div>").get(0);
@@ -141,4 +141,7 @@ function AddLocationDialog() {
 
 
 function DiscussionDialog() {
+    this.showDiscussion = function(frame, place) {
+        frame.src = "discuss.html?id=" + place.id + "&title=" + encodeURIComponent(place.name);
+    }
 }
