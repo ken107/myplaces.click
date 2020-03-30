@@ -27,6 +27,7 @@ function TheMap(viewRoot) {
     var centerMarker;
     var placeMarkers = {};
     var pinLabels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").reverse();
+    var infoWindow;
     this.mapReady = false;
     this.init = function(elem) {
         map = new google.maps.Map(elem, {
@@ -46,6 +47,7 @@ function TheMap(viewRoot) {
             map: map,
             icon: "/img/azure-pin.png",
         });
+        infoWindow = new google.maps.InfoWindow();
         this.mapReady = true;
     }
     this.setCenter = function(place) {
@@ -61,11 +63,7 @@ function TheMap(viewRoot) {
     this.setPlaces = function(places) {
         var newMarkers = {};
         places.forEach(function(place) {
-            newMarkers[place.id] = placeMarkers[place.id] || new google.maps.Marker({
-                map: map,
-                label: pinLabels.pop(),
-                position: new google.maps.LatLng(place.lat, place.lng)
-            })
+            newMarkers[place.id] = placeMarkers[place.id] || newMarker(place);
         })
         for (var id in placeMarkers) {
             if (!newMarkers[id]) {
@@ -75,16 +73,40 @@ function TheMap(viewRoot) {
         }
         placeMarkers = newMarkers;
     }
+    function newMarker(place) {
+        var marker = new google.maps.Marker({
+            map: map,
+            label: pinLabels.pop(),
+            position: new google.maps.LatLng(place.lat, place.lng)
+        })
+        marker.addListener('click', function() {
+            infoWindow.setContent(getInfoWindowContent(place));
+            infoWindow.open(map, marker);
+        })
+        return marker;
+    }
+    function getInfoWindowContent(place) {
+        function joinDiscussion(place) {
+            $(viewRoot).triggerHandler("join-discussion", place);
+        }
+        var div = $("<div>").get(0);
+        $("<h6>").text(place.name).appendTo(div);
+        if (place.address) $("<div>").text(place.address).appendTo(div);
+        if (place.address2) $("<div>").text(place.address2).appendTo(div);
+        if (place.city || place.state) $("<div>").text(place.city + (place.city && place.state ? ", " : "") + place.state + " " + place.postalCode).appendTo(div);
+        $("<a class='d-block mt-1'>").css({color: "blue", textDecoration: "underline"}).text("Join Discussion").click(joinDiscussion).appendTo(div);
+        return div;
+    }
 }
 
 
 
-function LocationDetails() {
+function LocationDetails(viewRoot) {
     this.showDirections = function(place) {
         window.open("https://www.google.com/maps/dir/?api=1&destination=" + place.lat + "," + place.lng, "_blank");
     }
-    this.showSource = function(place) {
-        window.open(place.source, "_blank");
+    this.showDiscussion = function(place) {
+        $(viewRoot).triggerHandler('join-discussion', place);
     }
 }
 
@@ -108,4 +130,9 @@ function AddLocationDialog() {
     function onSubmitted() {
         this.showSuccess = true;
     }
+}
+
+
+
+function DiscussionDialog() {
 }

@@ -76,6 +76,7 @@
                 bind-param-center="#map.center"
                 bind-param-places="#map.places"
                 bind-statement-1="$(thisElem).css('height', #map.height)"
+                bind-event-join-discussion="this.joinDiscussion(event.data)"
                 bind-event-bounds-changed="#map.bounds = event.data"></div>
         </div>
         <div class="col-lg-5 map-content-sidebar p-2 p-lg-3">
@@ -88,7 +89,8 @@
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
             <div bind-view="LocationDetails"
-                bind-param-places="#map.places">
+                bind-param-places="#map.places"
+                bind-event-join-discussion="this.joinDiscussion(event.data)">
             </div>
         </div>
     </div>
@@ -106,6 +108,7 @@
 
 <!-- Dialogs -->
 <div bind-view="AddLocationDialog" bind-param-visible="#addLocationDialog.visible"></div>
+<div bind-view="DiscussionDialog" bind-param-visible="#discussionDialog.visible" bind-param-place="#discussionDialog.place"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -227,6 +230,15 @@
 
     addLocationDialog = {
         visible: false
+    }
+
+    discussionDialog = {
+        place: null,
+        visible: false
+    }
+    function joinDiscussion(place) {
+        discussionDialog.place = place;
+        discussionDialog.visible = true;
     }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>

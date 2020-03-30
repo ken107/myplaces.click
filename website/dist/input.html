@@ -26,11 +26,13 @@
                     lat: form.lat.value,
                     lng: form.lng.value,
                     source: form.source.value,
+                    sourceUrl: form.sourceUrl.value,
                 };
                 if (!data.name) return error = {message: "Missing name"};
                 if (!data.lat) return error = {message: "Missing lat"};
                 if (!data.lng) return error = {message: "Missing lng"};
                 if (!data.source) return error = {message: "Missing source"};
+                if (!data.sourceUrl) return error = {message: "Missing source URL"};
                 $.ajax({
                     method: "POST",
                     url: serviceUrl + "/add-test-location",
@@ -78,8 +80,11 @@
                     <div class="col-md-6 mt-2">
                         <input type="text" name="lng" class="form-control" placeholder="Lng*">
                     </div>
-                    <div class="col-md-12 mt-2">
+                    <div class="col-md-4 mt-2">
                         <input type="text" name="source" class="form-control" placeholder="Source*">
+                    </div>
+                    <div class="col-md-8 mt-2">
+                        <input type="text" name="sourceUrl" class="form-control" placeholder="Source URL*">
                     </div>
                     <div class="col-md-12 mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>

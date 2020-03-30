@@ -45,7 +45,8 @@ async function getTestLocations(req: express.Request, res: express.Response, nex
                 countryCode,
                 ST_Latitude(lngLat) AS lat,
                 ST_Longitude(lngLat) AS lng,
-                source
+                source,
+                sourceUrl
             FROM
                 testLocations
             WHERE
@@ -65,10 +66,10 @@ async function getTestLocations(req: express.Request, res: express.Response, nex
 
 async function addTestLocation(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-        assert(req.body.name && req.body.lat && req.body.lng && req.body.source, "Missing args");
+        assert(req.body.name && req.body.lat && req.body.lng && req.body.source && req.body.sourceUrl, "Missing args");
         await db.execute(`
-            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, lngLat, source)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?)
+            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, lngLat, source, sourceUrl)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?)
             `, [
                 req.body.name,
                 req.body.address,
@@ -79,7 +80,8 @@ async function addTestLocation(req: express.Request, res: express.Response, next
                 req.body.countryCode,
                 req.body.lng,
                 req.body.lat,
-                req.body.source
+                req.body.source,
+                req.body.sourceUrl
             ]);
         res.end();
     }

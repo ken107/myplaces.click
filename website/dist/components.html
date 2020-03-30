@@ -39,7 +39,7 @@
             <a class="show-more-options pull-right" bind-event-click="#toggleFilters++">
                 <i class="fa fa-plus-circle"></i> Show More Options
             </a>
-            <div bind-statement-1="$(thisElem).toggle(!!#progress)">
+            <div style="position: absolute" bind-statement-1="$(thisElem).toggle(!!#progress)">
                 <div class="spinner" style="border-color: #888"></div>
             </div>
         </div>
@@ -122,7 +122,11 @@
                 <div>{{#place.address}}</div>
                 <div>{{#place.address2}}</div>
                 <div>{{#place.city}}<span bind-statement-1="$(thisElem).toggle(!!#place.city && !!#place.state)">, </span>{{#place.state}} {{#place.postalCode}}</div>
-                <a target="_blank" style="color: blue; text-decoration: underline;" bind-statement-1="$(thisElem).attr('href', #place.source)">source</a>
+                <a style="color: blue; text-decoration: underline;" bind-event-click="this.showDiscussion(#place)">Join Discussion</a>
+            </div>
+            <div class="mt-2 card-text text-muted footnotes">
+                source:
+                <a style="text-decoration: underline;" target="_blank" bind-statement-1="$(thisElem).attr('href', #place.sourceUrl)">{{#place.source}}</a>
             </div>
             <button type="button" class="btn btn-primary btn-directions"
                 bind-event-click="this.showDirections(#place)">Directions</button>
@@ -175,3 +179,22 @@
     </div>
 </div>
 
+
+
+<div data-class="DiscussionDialog" class="discussion-dialog modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    bind-statement-2="$(thisElem).modal(#visible ? 'show' : 'hide')"
+    bind-event-hidden.bs.modal="#visible = false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">Discussion</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Disqus integration
+            </div>
+        </div>
+    </div>
+</div>

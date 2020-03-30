@@ -34,3 +34,7 @@
     bottom: 1em;
     right: 1em;
 }
+.location-details .footnotes {
+    font-size: small;
+    font-style: italic;
+}
