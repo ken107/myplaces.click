@@ -87,3 +87,25 @@ function LocationDetails() {
         window.open(place.source, "_blank");
     }
 }
+
+
+
+function AddLocationDialog() {
+    this.showSuccess = false;
+    this.submit = function(source, email) {
+        if (!source.trim()) return;
+        $.ajax({
+            method: "POST",
+            url: serviceUrl + "/add-user-submission",
+            data: JSON.stringify({
+                source: source,
+                email: email
+            }),
+            contentType: "application/json",
+            success: onSubmitted.bind(this)
+        })
+    }
+    function onSubmitted() {
+        this.showSuccess = true;
+    }
+}

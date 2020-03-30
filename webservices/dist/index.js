@@ -23,6 +23,7 @@ app.get("/", (req, res) => res.end("Good"));
 app.get("/shutdown", shutdown);
 app.get("/get-test-locations", getTestLocations);
 app.post("/add-test-location", addTestLocation);
+app.post("/add-user-submission", addUserSubmission);
 const server = app.listen(config_1.default.port, () => console.log("Server started on", config_1.default.port));
 const db = dbs.getConnection("testingmap");
 function shutdown(req, res) {
@@ -85,6 +86,16 @@ async function addTestLocation(req, res, next) {
             req.body.lat,
             req.body.source
         ]);
+        res.end();
+    }
+    catch (err) {
+        next(err);
+    }
+}
+async function addUserSubmission(req, res, next) {
+    try {
+        assert_1.default(req.body.source, "Missing args");
+        await db.execute("INSERT INTO userSubmissions (source, email) VALUES (?, ?)", [req.body.source, req.body.email]);
         res.end();
     }
     catch (err) {

@@ -1,5 +1,5 @@
 
-<nav data-class="NavBar" class="navbar navbar-expand-lg navbar-light">
+<nav data-class="NavBar" class="navbar navbar-expand-lg navbar-light" bind-var-view-root="thisElem">
     <a class="navbar-brand logo" href="index.html">
         COVID-19 Testing Locations
     </a>
@@ -12,7 +12,9 @@
                 <a class="nav-link" href="#">Share</a>
             </li>
             <li class="nav-item">
-                <a href="add-listing.html" class="nav-link link-color link-color-2"><i class="flaticon-plus"></i> Add Location</a>
+                <button type="button" class="nav-link link-color link-color-2" style="cursor: pointer" bind-event-click="$(#viewRoot).triggerHandler('add-location')">
+                    <i class="flaticon-plus"></i> Add Location
+                </button>
             </li>
         </ul>
     </div>
@@ -128,6 +130,48 @@
     </div>
     <div class="text-muted" bind-statement-1="$(thisElem).toggle(!#places.length)">
         No results
+    </div>
+</div>
+
+
+
+<div data-class="AddLocationDialog" class="add-location-dialog modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    bind-statement-1="if (#visible) #showSuccess = false"
+    bind-statement-2="$(thisElem).modal(#visible ? 'show' : 'hide')"
+    bind-event-hidden.bs.modal="#visible = false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">Submit Location</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form bind-statement-1="$(thisElem).toggle(!#showSuccess)" bind-event-submit="this.submit(thisElem.source.value, thisElem.email.value); return false;">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <span class="form-text">
+                            Please provide the URL of the webpage(s) with information about COVID-19 test location(s).
+                            After review, we will add them to the map.  We're grateful for your contributions.
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        Sources
+                        <textarea rows="3" name="source" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        Email (optional)
+                        <input type="text" name="email" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+            <div class="modal-body" bind-statement-1="$(thisElem).toggle(#showSuccess)">
+                Your information has been received.  Thank you.
+            </div>
+        </div>
     </div>
 </div>
 

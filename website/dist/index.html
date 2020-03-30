@@ -53,7 +53,8 @@
 <!-- Main header start -->
 <header class="main-header main-header-3 fixed-header2">
     <div class="container-fluid">
-        <div bind-view="NavBar"></div>
+        <div bind-view="NavBar"
+            bind-event-add-location="#addLocationDialog.visible = true"></div>
     </div>
 </header>
 <!-- Main header end -->
@@ -102,6 +103,9 @@
         <button type="submit" class="btn btn-sm button-theme">Search</button>
     </form>
 </div>
+
+<!-- Dialogs -->
+<div bind-view="AddLocationDialog" bind-param-visible="#addLocationDialog.visible"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -219,6 +223,10 @@
                 progress--;
             }
         })
+    }
+
+    addLocationDialog = {
+        visible: false
     }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
