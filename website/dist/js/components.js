@@ -32,6 +32,12 @@ function TheMap(viewRoot) {
         map = new google.maps.Map(elem, {
             center: new google.maps.LatLng(0, 0),
             zoom: 2,
+            fullscreenControl: false,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_RIGHT
+            }
         });
         map.addListener('bounds_changed', function() {
             $(viewRoot).triggerHandler("bounds-changed", map.getBounds());

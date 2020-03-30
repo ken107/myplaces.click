@@ -12,7 +12,7 @@
                 <a class="nav-link" href="#">Share</a>
             </li>
             <li class="nav-item">
-                <a href="add-listing.html" class="nav-link link-color link-color-2"><i class="flaticon-plus"></i> Add Listing</a>
+                <a href="add-listing.html" class="nav-link link-color link-color-2"><i class="flaticon-plus"></i> Add Location</a>
             </li>
         </ul>
     </div>
@@ -25,11 +25,11 @@
     bind-statement-1="if (#searchBox && #bounds) #searchBox.setBounds(#bounds)">
     <div class="properties-map-search-content">
         <div class="input-group">
-            <input class="form-control search-fields" placeholder="My Location"
+            <input class="form-control search-fields" placeholder="Search"
                 bind-statement-1="if (#apiReady) this.initSearchBox(thisElem)">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary" bind-event-click="this.onLocateMe()">
-                    <i class="fa fa-location-arrow"></i>
+                    <img src="/img/locate-me.png" style="height: 1em">
                 </button>
             </div>
         </div>
@@ -112,7 +112,7 @@
 
 
 <div data-class="LocationDetails" class="location-details">
-    <div class="card mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
+    <div class="card bg-light mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
         <div class="card-body">
             <div class="pull-right ml-2 pin">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
             <h5 class="card-title">{{#place.name}}</h5>
@@ -125,6 +125,9 @@
             <button type="button" class="btn btn-primary btn-directions"
                 bind-event-click="this.showDirections(#place)">Directions</button>
         </div>
+    </div>
+    <div class="text-muted" bind-statement-1="$(thisElem).toggle(!#places.length)">
+        No results
     </div>
 </div>
 
