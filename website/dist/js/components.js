@@ -52,6 +52,7 @@ function TheMap(viewRoot) {
         centerMarker = new google.maps.Marker({
             map: map,
             icon: "/img/azure-pin.png",
+            clickable: false,
         });
         infoWindow = new google.maps.InfoWindow();
         this.mapReady = true;
