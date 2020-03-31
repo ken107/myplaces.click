@@ -54,13 +54,15 @@
     <script  src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-<body bind-statement-1="if (#map.bounds && #map.center) refreshPlaces()">
+<body bind-statement-1="if (#map.bounds && #map.center) refreshPlaces()" bind-statement-2="if (#map.apiReady) this.startup()">
 <div class="page_loader"></div>
 
 <!-- Main header start -->
 <header class="main-header main-header-3 fixed-header2">
     <div class="container-fluid">
         <div bind-view="NavBar"
+            bind-event-share-twitter="this.shareTwitter()"
+            bind-event-share-facebook="this.shareFacebook()"
             bind-event-add-location="#addLocationDialog.visible = true"></div>
     </div>
 </header>
@@ -161,6 +163,14 @@
 <script src="js/components.js"></script>
 
 <script>
+    var queryString = {};
+    if (location.search) {
+        location.search.substr(1).split('&').forEach(function(token) {
+            var pair = token.split('=');
+            queryString[decodeURIComponent(pair[0])] = pair.length > 1 ? decodeURIComponent(pair[1]) : true;
+        })
+    }
+
     $("<div>").load("components.html", function() {
         $(this).children().each(function() {
             var className = $(this).data("class");
@@ -187,7 +197,6 @@
         map.height = $(this).height() - 110;
     }
 
-    $(locateMe)
     function locateMe() {
         if (navigator.geolocation) {
             progress++;
@@ -205,7 +214,7 @@
         console.error(err);
     }
 
-    var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
+    var serviceUrl = location.hostname == "localhost" || location.hostname == "local.testingmap.com" ? "http://localhost:8081" : "/webservices";
     progress = 0;
     error = null;
 
@@ -248,8 +257,58 @@
         discussionDialog.place = place;
         discussionDialog.visible = true;
     }
+
+    function startup() {
+        if (queryString.co) {
+            var coords = queryString.co.split(",");
+            setCenter({
+                location: new google.maps.LatLng(coords[0], coords[1]),
+                viewport: new google.maps.LatLngBounds(
+                    new google.maps.LatLng(coords[2], coords[3]),
+                    new google.maps.LatLng(coords[4], coords[5])
+                )
+            })
+        }
+        else locateMe();
+    }
+
+    function shareTwitter() {
+        var url = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(getUrlForSharing()) + "&text=" + encodeURIComponent("COVID-19 Testing Locations");
+        window.open(url, "_blank");
+    }
+    function shareFacebook() {
+        FB.ui({method: "share", href: getUrlForSharing()}, function() {});
+    }
+    function getUrlForSharing() {
+        var base = location.href.split("?")[0];
+        if (map.center) {
+            var viewport = map.bounds.toJSON();
+            var coords = [
+                map.center.location.lat(),
+                map.center.location.lng(),
+                viewport.south,
+                viewport.west,
+                viewport.north,
+                viewport.east
+            ];
+            return base + "?co=" + coords.join(",");
+        }
+        else return base;
+    }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
+
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId            : '336240683089353',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v6.0'
+        });
+    };
+</script>
+<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 
 </body>
 </html>

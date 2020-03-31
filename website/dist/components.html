@@ -9,10 +9,23 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Share</a>
+                <a class="nav-link p-lg-0" bind-event-click="$(#viewRoot).triggerHandler('share-twitter')">
+                    <img class="d-none d-lg-inline" src="/img/twitter.png">
+                    <span class="d-lg-none">
+                        <img style="width: 15px" src="/img/twitter.png"> Tweet
+                    </span>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link link-color link-color-2" bind-event-click="$(#viewRoot).triggerHandler('add-location')">
+                <a class="nav-link p-lg-0 ml-lg-2" bind-event-click="$(#viewRoot).triggerHandler('share-facebook')">
+                    <img class="d-none d-lg-inline" src="/img/facebook.png">
+                    <span class="d-lg-none">
+                        <img style="width: 15px" src="/img/facebook.png"> Share on Facebook
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-color link-color-2 mt-0" bind-event-click="$(#viewRoot).triggerHandler('add-location')">
                     <i class="flaticon-plus"></i> Add Location
                 </a>
             </li>
