@@ -1,0 +1,8 @@
+/dist
+/logs
+/uploads
+node_modules
+
+/knexfile.js
+
+/covid-admin-*.tgz
