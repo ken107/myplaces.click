@@ -59,7 +59,7 @@ function TheMap(viewRoot) {
     }
     this.setCenter = function(geometry) {
             if (geometry.viewport) {
-                map.fitBounds(geometry.viewport);
+                map.fitBounds(geometry.viewport, {top:0, right:0, bottom:0, left:0});
             }
             else {
                 map.setCenter(geometry.location);
