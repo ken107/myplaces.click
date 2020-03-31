@@ -1,3 +1,4 @@
+import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { Request, Router } from 'express';
 import jwt from 'jwt-simple';
@@ -7,7 +8,6 @@ import shortid from 'shortid';
 import authHandler, { getSessionExpired } from '../handlers/auth-handler';
 import requestDBHandler from '../handlers/request-db-handler';
 import { DBUser, DBUserSession } from '../models/user-role';
-import axios from 'axios';
 
 export default function credentialRoute() {
     const route = Router();

@@ -10,6 +10,7 @@ import responseUtilsHandler from '../handlers/response-utils-handler';
 import credentialRoute from './credential-route';
 import createFileUploadRoute from './file-upload-route';
 import userRoutes from './users-route';
+import convoRoute from './convo-route';
 
 export default function apiRoute() {
     const route = Router();
@@ -59,6 +60,7 @@ export default function apiRoute() {
 
     route.use('/users', userRoutes);
     route.use('/credential', credentialRoute());
+    route.use('/convo', convoRoute());
 
     route.use('/utils/files/upload', createFileUploadRoute());
 

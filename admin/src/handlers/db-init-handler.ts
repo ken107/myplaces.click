@@ -7,6 +7,7 @@ import path from 'path';
 import args from '../args';
 import { DBFile } from '../models/db-file';
 import { DBRole, DBUser, DBUserRole, DBUserSession } from '../models/user-role';
+import { DBQuestion, DBAnswer, DBAnswerVote } from '../models/loc-convo';
 
 declare global {
     namespace Express {
@@ -23,7 +24,7 @@ async function createInitializer(knexConfig: object) {
     })();
 
     const knex = Knex(knexCfg[process.env.DB_KNEX_CFG]);
-    await buildTable(knex, DBUser, DBUserSession);
+    await buildTable(knex, DBUser, DBUserSession, DBQuestion, DBAnswer, DBAnswerVote);
     // await buildTable(knex, DBUser, DBRole, DBUserRole, DBUserSession, DBFile);
 
     const appRoles: Record<string, number> = (process.env.APP_ROLES || '').split(';').filter(r => !!r)

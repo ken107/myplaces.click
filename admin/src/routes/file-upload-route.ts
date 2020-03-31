@@ -18,7 +18,7 @@ export default function createFileUploadRoute(opts?: FileUploadOptions) {
             (process.env.UPLOAD_TEMP_DIR || require('../../package.json')['name']),
         ...(opts || {}),
     }));
-    
+
     route.post('/', async (req, res, next) => {
         const { file }: Record<string, UploadedFile> = req.files as any;
         const { user } = req.authInfo || {};
