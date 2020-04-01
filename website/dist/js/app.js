@@ -29,14 +29,6 @@ $(function () {
     $('.dashboard-nav').css('min-height', winHeight);
 
 
-    // Magnify activation
-    $('.portfolio-item').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        gallery:{enabled:true}
-    });
-
-
     // Header shrink while page scroll
     adjustHeader();
     doSticky();
@@ -101,96 +93,6 @@ $(function () {
     }
 
 
-    // Banner slider
-    (function ($) {
-        //Function to animate slider captions
-        function doAnimations(elems) {
-            //Cache the animationend event in a variable
-            var animEndEv = 'webkitAnimationEnd animationend';
-            elems.each(function () {
-                var $this = $(this),
-                    $animationType = $this.data('animation');
-                $this.addClass($animationType).one(animEndEv, function () {
-                    $this.removeClass($animationType);
-                });
-            });
-        }
-
-        //Variables on page load
-        var $myCarousel = $('#carousel-example-generic')
-        var $firstAnimatingElems = $myCarousel.find('.item:first').find("[data-animation ^= 'animated']");
-        //Initialize carousel
-        $myCarousel.carousel();
-
-        //Animate captions in first slide on page load
-        doAnimations($firstAnimatingElems);
-        //Pause carousel
-        $myCarousel.carousel('pause');
-        //Other slides to be animated on carousel slide event
-        $myCarousel.on('slide.bs.carousel', function (e) {
-            var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
-            doAnimations($animatingElems);
-        });
-        $('#carousel-example-generic').carousel({
-            interval: 3000,
-            pause: "false"
-        });
-    })(jQuery);
-
-    // Counter
-    function isCounterElementVisible($elementToBeChecked) {
-        var TopView = $(window).scrollTop();
-        var BotView = TopView + $(window).height();
-        var TopElement = $elementToBeChecked.offset().top;
-        var BotElement = TopElement + $elementToBeChecked.height();
-        return ((BotElement <= BotView) && (TopElement >= TopView));
-    }
-
-    $(window).on('scroll', function () {
-        $(".counter").each(function () {
-            var isOnView = isCounterElementVisible($(this));
-            if (isOnView && !$(this).hasClass('Starting')) {
-                $(this).addClass('Starting');
-                $(this).prop('Counter', 0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: 3000,
-                    easing: 'swing',
-                    step: function (now) {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
-            }
-        });
-    });
-
-
-    // Countdown activation
-    $( function() {
-        // Add background image
-        //$.backstretch('../img/nature.jpg');
-        var endDate = "December  27, 2019 15:03:25";
-        $('.countdown.simple').countdown({ date: endDate });
-        $('.countdown.styled').countdown({
-            date: endDate,
-            render: function(data) {
-                $(this.el).html("<div>" + this.leadingZeros(data.days, 3) + " <span>Days</span></div><div>" + this.leadingZeros(data.hours, 2) + " <span>Hours</span></div><div>" + this.leadingZeros(data.min, 2) + " <span>Minutes</span></div><div>" + this.leadingZeros(data.sec, 2) + " <span>Seconds</span></div>");
-            }
-        });
-        $('.countdown.callback').countdown({
-            date: +(new Date) + 10000,
-            render: function(data) {
-                $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
-            },
-            onEnd: function() {
-                $(this.el).addClass('ended');
-            }
-        }).on("click", function() {
-            $(this).removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
-        });
-
-    });
-
     $(".range-slider-ui").each(function () {
         var minRangeValue = $(this).attr('data-min');
         var maxRangeValue = $(this).attr('data-max');
@@ -235,35 +137,6 @@ $(function () {
     $('.search-options-btn').on('click', function () {
         $('.search-section').toggleClass('show-search-area');
         $('.search-options-btn .fa').toggleClass('fa-chevron-down');
-    });
-
-    // Carousel with partner initialization
-    (function () {
-        $('#ourPartners').carousel({interval: 3600});
-    }());
-
-    (function () {
-        $('.our-partners .item').each(function () {
-            var itemToClone = $(this);
-            for (var i = 1; i < 4; i++) {
-                itemToClone = itemToClone.next();
-                if (!itemToClone.length) {
-                    itemToClone = $(this).siblings(':first');
-                }
-                itemToClone.children(':first-child').clone()
-                    .addClass("cloneditem-" + (i))
-                    .appendTo($(this));
-            }
-        });
-    }());
-
-    // Background video playing script
-    $(document).ready(function () {
-        $(".player").mb_YTPlayer(
-            {
-                mobileFallbackImage: 'img/banner/banner-1.jpg'
-            }
-        );
     });
 
     // Multilevel menuus
@@ -328,71 +201,10 @@ $(function () {
     });
 
 
-    // Full  Page Search Activation
-    $(function () {
-        $('a[href="#full-page-search"]').on('click', function(event) {
-            event.preventDefault();
-            $('#full-page-search').addClass('open');
-            $('#full-page-search > form > input[type="search"]').focus();
-        });
-
-        $('#full-page-search, #full-page-search button.close').on('click keyup', function(event) {
-            if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-                $(this).removeClass('open');
-            }
-        });
-    });
-
-
-    // Slick Sliders
-    $('.slick-carousel').each(function () {
-        var slider = $(this);
-        $(this).slick({
-            infinite: true,
-            dots: false,
-            arrows: false,
-            centerMode: true,
-            centerPadding: '0'
-        });
-        
-        $(this).closest('.slick-slider-area').find('.slick-prev').on("click", function () {
-            slider.slick('slickPrev');
-        });
-        $(this).closest('.slick-slider-area').find('.slick-next').on("click", function () {
-            slider.slick('slickNext');
-        });
-    });
-
-
     $(".dropdown.btns .dropdown-toggle").on('click', function() {
         $(this).dropdown("toggle");
         return false;
     });
-
-
-
-    // Dropzone initialization
-    Dropzone.autoDiscover = false;
-    $(function () {
-        $("div#myDropZone").dropzone({
-            url: "/file-upload"
-        });
-    });
-
-    // Filterizr initialization
-    $(function () {
-        //$('.filtr-container').filterizr();
-    });
-
-    function toggleChevron(e) {
-        $(e.target)
-            .prev('.panel-heading')
-            .find(".fa")
-            .toggleClass('fa-minus fa-plus');
-    }
-
-    $('.panel-group').on('shown.bs.collapse', toggleChevron);
-    $('.panel-group').on('hidden.bs.collapse', toggleChevron);
 });
 
 // mCustomScrollbar initialization

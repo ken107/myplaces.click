@@ -49,6 +49,7 @@ async function getTestLocations(req, res, next) {
                 state,
                 postalCode,
                 countryCode,
+                phone,
                 ST_Latitude(lngLat) AS lat,
                 ST_Longitude(lngLat) AS lng,
                 ST_Distance(lngLat, ST_SRID(POINT(?,?), 4326)) AS distance,
@@ -76,8 +77,8 @@ async function addTestLocation(req, res, next) {
     try {
         assert_1.default(req.body.name && req.body.lat && req.body.lng && req.body.source && req.body.sourceUrl, "Missing args");
         await db.execute(`
-            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, lngLat, source, sourceUrl)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?)
+            INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?)
             `, [
             req.body.name,
             req.body.address,
@@ -86,6 +87,7 @@ async function addTestLocation(req, res, next) {
             req.body.state,
             req.body.postalCode,
             req.body.countryCode,
+            req.body.phone,
             req.body.lng,
             req.body.lat,
             req.body.source,

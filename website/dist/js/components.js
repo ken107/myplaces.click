@@ -95,13 +95,20 @@ function TheMap(viewRoot) {
         function joinDiscussion() {
             $(viewRoot).triggerHandler("join-discussion", place);
         }
+        function showDirections() {
+            $(viewRoot).triggerHandler("show-directions", place);
+        }
         var div = $("<div>").get(0);
         $("<h6>").text(place.name).appendTo(div);
         if (place.address) $("<div>").text(place.address).appendTo(div);
         if (place.address2) $("<div>").text(place.address2).appendTo(div);
         if (place.city || place.state) $("<div>").text(place.city + (place.city && place.state ? ", " : "") + place.state + " " + place.postalCode).appendTo(div);
         $("<div class='text-muted font-italic'>").text(printDistance(place.distance)).appendTo(div);
-        $("<a class='d-block mt-1'>").css({color: "blue", textDecoration: "underline"}).text("Join Discussion").click(joinDiscussion).appendTo(div);
+
+        var buttons = $("<div class='buttons mt-2'>").appendTo(div);
+        $('<button type="button" class="btn btn-primary mr-1"><i class="material-icons">directions</i></button>').click(showDirections).appendTo(buttons);
+        $('<button type="button" class="btn btn-secondary mr-1"><i class="material-icons">forum</i></button>').click(joinDiscussion).appendTo(buttons);
+        if (place.phone) $('<a class="btn btn-success mr-1"><i class="material-icons">local_phone</i></a>').attr('href', 'tel:'+place.phone).appendTo(buttons);
         return div;
     }
 }
@@ -110,7 +117,7 @@ function TheMap(viewRoot) {
 
 function LocationDetails(viewRoot) {
     this.showDirections = function(place) {
-        window.open("https://www.google.com/maps/dir/?api=1&destination=" + place.lat + "," + place.lng, "_blank");
+        $(viewRoot).triggerHandler('show-directions', place);
     }
     this.showDiscussion = function(place) {
         $(viewRoot).triggerHandler('join-discussion', place);
@@ -159,6 +166,7 @@ function InputLocationDialog() {
         form.state.value = addr.administrative_area_level_1;
         form.postalCode.value = addr.postal_code;
         form.countryCode.value = addr.country;
+        form.phone.value = place.formatted_phone_number || "";
         form.lat.value = place.geometry.location.lat();
         form.lng.value = place.geometry.location.lng();
     }
@@ -173,6 +181,7 @@ function InputLocationDialog() {
             state: form.state.value,
             postalCode: form.postalCode.value,
             countryCode: form.countryCode.value,
+            phone: form.phone.value,
             lat: form.lat.value,
             lng: form.lng.value,
             source: form.source.value,

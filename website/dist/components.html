@@ -118,7 +118,7 @@
 
 
 
-<div data-class="TheMap"
+<div data-class="TheMap" class="the-map"
     bind-statement-1="if (#apiReady) this.init(thisElem)"
     bind-statement-3="if (#mapReady && #center) this.setCenter(#center)"
     bind-statement-2="if (#mapReady && #places) this.setPlaces(#places)">
@@ -138,14 +138,23 @@
                 <div>{{#place.address}}</div>
                 <div>{{#place.address2}}</div>
                 <div>{{#place.city}}<span bind-statement-1="$(thisElem).toggle(!!#place.city && !!#place.state)">, </span>{{#place.state}} {{#place.postalCode}}</div>
-                <a style="color: blue; text-decoration: underline;" bind-event-click="this.showDiscussion(#place)">Join Discussion</a>
+                <div>{{#place.phone}}</div>
             </div>
             <div class="mt-2 card-text text-muted footnotes">
                 source:
                 <a style="text-decoration: underline;" target="_blank" bind-statement-1="$(thisElem).attr('href', #place.sourceUrl)">{{#place.source}}</a>
             </div>
-            <button type="button" class="btn btn-primary btn-directions"
-                bind-event-click="this.showDirections(#place)">Directions</button>
+            <div class="buttons">
+                <a class="btn btn-success" bind-statement-1="if (#place.phone) $(thisElem).attr('href', 'tel:'+#place.phone).css('display', 'inline-block'); else $(thisElem).hide()">
+                    <i class="material-icons">local_phone</i>
+                </a>
+                <button type="button" class="btn btn-secondary" bind-event-click="this.showDiscussion(#place)">
+                    <i class="material-icons">forum</i>
+                </button>
+                <button type="button" class="btn btn-primary" bind-event-click="this.showDirections(#place)">
+                    <i class="material-icons">directions</i>
+                </button>
+            </div>
         </div>
     </div>
     <div class="text-muted" bind-statement-1="$(thisElem).toggle(!#places.length)">
@@ -237,6 +246,7 @@
                     <input type="text" name="state" class="form-control" placeholder="State / Province">
                     <input type="text" name="postalCode" class="form-control" placeholder="Postal Code">
                     <input type="text" name="countryCode" class="form-control" placeholder="Country Code">
+                    <input type="text" name="phone" class="form-control" placeholder="Phone">
                     <input type="text" name="lat" class="form-control" placeholder="Lat*">
                     <input type="text" name="lng" class="form-control" placeholder="Lng*">
                     <input type="text" name="source" class="form-control" placeholder="Source*">

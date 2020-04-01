@@ -1,4 +1,8 @@
 
+.material-icons {
+    vertical-align: middle;
+}
+
 .spinner {
     display: inline-block;
     vertical-align: middle;
@@ -19,6 +23,16 @@
 
 
 
+.the-map .btn {
+    border-radius: .5rem;
+    padding: .375rem;
+}
+.the-map .btn .material-icons {
+    font-size: 1.5rem;
+}
+
+
+
 .location-details {
     position: relative;
 }
@@ -26,14 +40,23 @@
     display: inline-block;
     width: 27px;
     height: 43px;
-    padding-top: 3px;
+    padding-top: 5px;
+    font-size: smaller;
+    font-weight: bold;
     text-align: center;
     background-image: url(/img/spotlight-poi-dotless2.png);
 }
-.location-details .btn-directions {
+.location-details .buttons {
     position: absolute;
     bottom: 1em;
     right: 1em;
+}
+.location-details .btn {
+    border-radius: .5rem;
+    padding: .375rem;
+}
+.location-details .btn .material-icons {
+    font-size: 1.5rem;
 }
 .location-details .footnotes {
     font-size: small;
