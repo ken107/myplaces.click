@@ -79,6 +79,7 @@
                 bind-param-api-ready="#map.apiReady"
                 bind-param-center="#map.center"
                 bind-param-places="#map.places"
+                bind-param-tag-map="#tagMap"
                 bind-statement-1="$(thisElem).css('height', #map.height)"
                 bind-event-join-discussion="this.joinDiscussion(event.data)"
                 bind-event-show-directions="this.showDirections(event.data)"
@@ -95,6 +96,7 @@
             </div>
             <div bind-view="LocationDetails"
                 bind-param-places="#map.places"
+                bind-param-tag-map="#tagMap"
                 bind-event-show-directions="this.showDirections(event.data)"
                 bind-event-join-discussion="this.joinDiscussion(event.data)">
             </div>
@@ -111,7 +113,7 @@
 <!-- Dialogs -->
 <div bind-view="AddLocationDialog" bind-param-visible="#addLocationDialog.visible"></div>
 <div bind-view="DiscussionDialog" bind-param-visible="#discussionDialog.visible" bind-param-place="#discussionDialog.place"></div>
-<div bind-view="InputLocationDialog" bind-param-visible="#inputLocationDialog.visible" bind-param-place="#inputLocationDialog.place"></div>
+<div bind-view="InputLocationDialog" bind-param-visible="#inputLocationDialog.visible" bind-param-place="#inputLocationDialog.place" bind-param-tags="#tags"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -198,7 +200,7 @@
         console.error(err);
     }
 
-    var serviceUrl = location.hostname == "localhost" ? "https://www.testingmap.com/webservices" : "/webservices";
+    var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
     progress = 0;
     error = null;
 
@@ -287,6 +289,14 @@
         }
         else return base;
     }
+
+    tags = null;
+    tagMap = null;
+    $.get(serviceUrl + "/get-tags", function(result) {
+        tags = result;
+        tagMap = {};
+        for (var i=0; i<tags.length; i++) tagMap[tags[i].id] = tags[i].name;
+    })
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
 

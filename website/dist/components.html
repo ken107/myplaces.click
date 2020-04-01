@@ -140,11 +140,7 @@
                 <div>{{#place.city}}<span bind-statement-1="$(thisElem).toggle(!!#place.city && !!#place.state)">, </span>{{#place.state}} {{#place.postalCode}}</div>
                 <div>{{#place.phone}}</div>
             </div>
-            <div class="mt-2 card-text text-muted footnotes">
-                source:
-                <a style="text-decoration: underline;" target="_blank" bind-statement-1="$(thisElem).attr('href', #place.sourceUrl)">{{#place.source}}</a>
-            </div>
-            <div class="buttons">
+            <div class="buttons pull-right ml-2">
                 <a class="btn btn-success" bind-statement-1="if (#place.phone) $(thisElem).attr('href', 'tel:'+#place.phone).css('display', 'inline-block'); else $(thisElem).hide()">
                     <i class="material-icons">local_phone</i>
                 </a>
@@ -154,6 +150,10 @@
                 <button type="button" class="btn btn-primary" bind-event-click="this.showDirections(#place)">
                     <i class="material-icons">directions</i>
                 </button>
+            </div>
+            <div class="mt-2 card-text text-muted footnotes">
+                <div>{{this.printTags(#place.tagIds, #tagMap)}}</div>
+                <div>source: <a style="text-decoration: underline;" target="_blank" bind-statement-1="$(thisElem).attr('href', #place.sourceUrl)">{{#place.source}}</a></div>
             </div>
         </div>
     </div>
@@ -251,6 +251,9 @@
                     <input type="text" name="lng" class="form-control" placeholder="Lng*">
                     <input type="text" name="source" class="form-control" placeholder="Source*">
                     <input type="text" name="sourceUrl" class="form-control" placeholder="Source URL*">
+                    <label class="form-check form-check-inline" bind-repeater-i="#tags.length" bind-var-tag="#tags[#i]">
+                        <input class="form-check-input" type="checkbox" bind-statement-1="$(thisElem).attr('name', 'tag-'+#tag.id)"> {{#tag.name}}
+                    </label>
                     <div class="alert alert-danger" bind-statement-1="$(thisElem).toggle(!!#error)">{{#error.message}}</div>
                 </div>
                 <div class="modal-footer">

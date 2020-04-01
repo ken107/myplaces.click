@@ -30,6 +30,7 @@ function MapSearch(viewRoot) {
 
 
 function TheMap(viewRoot) {
+    var self = this;
     var map;
     var centerMarker;
     var placeMarkers = {};
@@ -103,9 +104,9 @@ function TheMap(viewRoot) {
         if (place.address) $("<div>").text(place.address).appendTo(div);
         if (place.address2) $("<div>").text(place.address2).appendTo(div);
         if (place.city || place.state) $("<div>").text(place.city + (place.city && place.state ? ", " : "") + place.state + " " + place.postalCode).appendTo(div);
-        $("<div class='text-muted font-italic'>").text(printDistance(place.distance)).appendTo(div);
+        if (self.tagMap && place.tagIds) $("<div class='text-muted font-italic'>").text(place.tagIds.map(function(x) {return self.tagMap[x]}).join(", ")).appendTo(div);
 
-        var buttons = $("<div class='buttons mt-2'>").appendTo(div);
+        var buttons = $("<div class='buttons mt-3'>").appendTo(div);
         $('<button type="button" class="btn btn-primary mr-1"><i class="material-icons">directions</i></button>').click(showDirections).appendTo(buttons);
         $('<button type="button" class="btn btn-secondary mr-1"><i class="material-icons">forum</i></button>').click(joinDiscussion).appendTo(buttons);
         if (place.phone) $('<a class="btn btn-success mr-1"><i class="material-icons">local_phone</i></a>').attr('href', 'tel:'+place.phone).appendTo(buttons);
@@ -121,6 +122,9 @@ function LocationDetails(viewRoot) {
     }
     this.showDiscussion = function(place) {
         $(viewRoot).triggerHandler('join-discussion', place);
+    }
+    this.printTags = function(tagIds, tagMap) {
+        if (tagIds && tagMap) return tagIds.map(function(x) {return tagMap[x]}).join(", ");
     }
 }
 
@@ -161,7 +165,7 @@ function InputLocationDialog() {
         var addr = {};
         if (place.address_components) for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
         form.name.value = place.name;
-        form.address.value = [addr.street_number, addr.route].filter(x => x).join(" ");
+        form.address.value = [addr.street_number, addr.route].filter(function(x) {return x}).join(" ");
         form.city.value = addr.locality || "";
         form.state.value = addr.administrative_area_level_1 || "";
         form.postalCode.value = addr.postal_code || "";
@@ -186,6 +190,7 @@ function InputLocationDialog() {
             lng: form.lng.value,
             source: form.source.value,
             sourceUrl: form.sourceUrl.value,
+            tagIds: this.tags.filter(function(x) {return form["tag-"+x.id].checked}).map(function(x) {return x.id}),
         };
         if (!data.name) return error = {message: "Missing name"};
         if (!data.lat) return error = {message: "Missing lat"};

@@ -46,11 +46,6 @@
     text-align: center;
     background-image: url(/img/spotlight-poi-dotless2.png);
 }
-.location-details .buttons {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-}
 .location-details .btn {
     border-radius: .5rem;
     padding: .375rem;
