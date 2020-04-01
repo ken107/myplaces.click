@@ -160,7 +160,7 @@ function DiscussionDialog() {
 
 
 
-function InputLocationDialog() {
+function InputLocationDialog(viewRoot) {
     this.populate = function(form, place) {
         var addr = {};
         if (place.address_components) for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
@@ -210,6 +210,7 @@ function InputLocationDialog() {
     }
     function onSuccess() {
         this.visible = false;
+        $(viewRoot).triggerHandler("location-added");
     }
     function onError(xhr, textStatus, errorThrown) {
         this.error = {message: xhr.responseText || errorThrown || textStatus};

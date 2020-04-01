@@ -113,7 +113,11 @@
 <!-- Dialogs -->
 <div bind-view="AddLocationDialog" bind-param-visible="#addLocationDialog.visible"></div>
 <div bind-view="DiscussionDialog" bind-param-visible="#discussionDialog.visible" bind-param-place="#discussionDialog.place"></div>
-<div bind-view="InputLocationDialog" bind-param-visible="#inputLocationDialog.visible" bind-param-place="#inputLocationDialog.place" bind-param-tags="#tags"></div>
+<div bind-view="InputLocationDialog"
+    bind-param-visible="#inputLocationDialog.visible"
+    bind-param-place="#inputLocationDialog.place"
+    bind-param-tags="#tags"
+    bind-event-location-added="this.refreshPlacesNow()"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
