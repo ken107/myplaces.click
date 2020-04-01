@@ -159,13 +159,13 @@ function DiscussionDialog() {
 function InputLocationDialog() {
     this.populate = function(form, place) {
         var addr = {};
-        for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
+        if (place.address_components) for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
         form.name.value = place.name;
-        form.address.value = addr.street_number + " " + addr.route;
-        form.city.value = addr.locality;
-        form.state.value = addr.administrative_area_level_1;
-        form.postalCode.value = addr.postal_code;
-        form.countryCode.value = addr.country;
+        form.address.value = [addr.street_number, addr.route].filter(x => x).join(" ");
+        form.city.value = addr.locality || "";
+        form.state.value = addr.administrative_area_level_1 || "";
+        form.postalCode.value = addr.postal_code || "";
+        form.countryCode.value = addr.country || "";
         form.phone.value = place.formatted_phone_number || "";
         form.lat.value = place.geometry.location.lat();
         form.lng.value = place.geometry.location.lng();
