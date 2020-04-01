@@ -63,7 +63,7 @@
         <div bind-view="NavBar"
             bind-event-share-twitter="this.shareTwitter()"
             bind-event-share-facebook="this.shareFacebook()"
-            bind-event-add-location="#addLocationDialog.visible = true"></div>
+            bind-event-add-location="if (queryString.pass) #inputLocationDialog.visible = true; else #addLocationDialog.visible = true"></div>
     </div>
 </header>
 <!-- Main header end -->
@@ -76,7 +76,7 @@
                 bind-param-api-ready="#map.apiReady"
                 bind-param-bounds="#map.bounds"
                 bind-param-progress="#progress"
-                bind-event-place-changed="this.setCenter(event.data.geometry)"
+                bind-event-place-changed="this.setCenterPlace(event.data)"
                 bind-event-locate-me="this.locateMe()"></div>
         </div>
         <div class="col-lg-7">
@@ -94,7 +94,7 @@
                     bind-param-api-ready="#map.apiReady"
                     bind-param-bounds="#map.bounds"
                     bind-param-progress="#progress"
-                    bind-event-place-changed="this.setCenter(event.data.geometry)"
+                    bind-event-place-changed="this.setCenterPlace(event.data)"
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
             <div bind-view="LocationDetails"
@@ -123,6 +123,7 @@
 <!-- Dialogs -->
 <div bind-view="AddLocationDialog" bind-param-visible="#addLocationDialog.visible"></div>
 <div bind-view="DiscussionDialog" bind-param-visible="#discussionDialog.visible" bind-param-place="#discussionDialog.place"></div>
+<div bind-view="InputLocationDialog" bind-param-visible="#inputLocationDialog.visible" bind-param-place="#inputLocationDialog.place"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -188,6 +189,10 @@
     function onMapApiReady() {
         map.apiReady = true;
     }
+    function setCenterPlace(place) {
+        setCenter(place.geometry);
+        if (queryString.pass) inputLocationDialog.place = place;
+    }
     function setCenter(geometry) {
         map.center = geometry;
     }
@@ -214,7 +219,7 @@
         console.error(err);
     }
 
-    var serviceUrl = location.hostname == "localhost" || location.hostname == "local.testingmap.com" ? "http://localhost:8081" : "/webservices";
+    var serviceUrl = location.hostname == "localhost" ? "https://www.testingmap.com/webservices" : "/webservices";
     progress = 0;
     error = null;
 
@@ -256,6 +261,11 @@
     function joinDiscussion(place) {
         discussionDialog.place = place;
         discussionDialog.visible = true;
+    }
+
+    inputLocationDialog = {
+        place: null,
+        visible: false
     }
 
     function startup() {

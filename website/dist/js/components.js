@@ -146,3 +146,61 @@ function DiscussionDialog() {
         frame.src = "discuss.html?id=" + place.id + "&title=" + encodeURIComponent(place.name);
     }
 }
+
+
+
+function InputLocationDialog() {
+    this.populate = function(form, place) {
+        var addr = {};
+        for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
+        form.name.value = place.name;
+        form.address.value = addr.street_number + " " + addr.route;
+        form.city.value = addr.locality;
+        form.state.value = addr.administrative_area_level_1;
+        form.postalCode.value = addr.postal_code;
+        form.countryCode.value = addr.country;
+        form.lat.value = place.geometry.location.lat();
+        form.lng.value = place.geometry.location.lng();
+    }
+    this.progress = 0;
+    this.error = null;
+    this.submit = function(form) {
+        var data = {
+            name: form.name.value,
+            address: form.address.value,
+            address2: form.address2.value,
+            city: form.city.value,
+            state: form.state.value,
+            postalCode: form.postalCode.value,
+            countryCode: form.countryCode.value,
+            lat: form.lat.value,
+            lng: form.lng.value,
+            source: form.source.value,
+            sourceUrl: form.sourceUrl.value,
+        };
+        if (!data.name) return error = {message: "Missing name"};
+        if (!data.lat) return error = {message: "Missing lat"};
+        if (!data.lng) return error = {message: "Missing lng"};
+        if (!data.source) return error = {message: "Missing source"};
+        if (!data.sourceUrl) return error = {message: "Missing source URL"};
+        this.progress++;
+        $.ajax({
+            method: "POST",
+            url: serviceUrl + "/add-test-location",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: onSuccess.bind(this),
+            error: onError.bind(this),
+            complete: onComplete.bind(this)
+        })
+    }
+    function onSuccess() {
+        this.visible = false;
+    }
+    function onError(xhr, textStatus, errorThrown) {
+        this.error = {message: xhr.responseText || errorThrown || textStatus};
+    }
+    function onComplete() {
+        this.progress--;
+    }
+}
