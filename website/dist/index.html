@@ -38,16 +38,6 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script  src="js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script  src="js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script  src="js/html5shiv.min.js"></script>
-    <script  src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body bind-statement-1="if (#map.bounds && #map.center) refreshPlaces()" bind-statement-2="if (#map.apiReady) this.startup()">
 <div class="page_loader"></div>
@@ -70,7 +60,7 @@
             <div bind-view="MapSearch"
                 bind-param-api-ready="#map.apiReady"
                 bind-param-bounds="#map.bounds"
-                bind-param-progress="#progress"
+                bind-param-progress="#map.progress"
                 bind-event-place-changed="this.setCenterPlace(event.data)"
                 bind-event-locate-me="this.locateMe()"></div>
         </div>
@@ -90,7 +80,7 @@
                 <div bind-view="MapSearch"
                     bind-param-api-ready="#map.apiReady"
                     bind-param-bounds="#map.bounds"
-                    bind-param-progress="#progress"
+                    bind-param-progress="#map.progress"
                     bind-event-place-changed="this.setCenterPlace(event.data)"
                     bind-event-locate-me="this.locateMe()"></div>
             </div>
@@ -129,12 +119,15 @@
 <script  src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script  src="js/moment.min.js"></script>
 <script  src="js/daterangepicker.min.js"></script>
+<script  src="https://assets.lsdsoftware.com/databind.js"></script>
+<script  src="js/components.js"></script>
 <script  src="js/app.js"></script>
+<script  src="js/maps.js"></script>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script  src="js/ie10-viewport-bug-workaround.js"></script>
-<!-- Custom javascript -->
-<script  src="js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- Google Analytics -->
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -144,166 +137,10 @@
     ga('send', 'pageview');
 </script>
 
-
-<script src="https://assets.lsdsoftware.com/databind.js"></script>
-<script src="js/components.js"></script>
-
-<script>
-    var queryString = {};
-    if (location.search) {
-        location.search.substr(1).split('&').forEach(function(token) {
-            var pair = token.split('=');
-            queryString[decodeURIComponent(pair[0])] = pair.length > 1 ? decodeURIComponent(pair[1]) : true;
-        })
-    }
-
-    $("<div>").load("components.html", function() {
-        $(this).children().each(function() {
-            var className = $(this).data("class");
-            dataBinder.views[className] = {template: this, controller: window[className]};
-        })
-    })
-
-    map = {
-        apiReady: false,
-        bounds: null,
-        places: null,
-        height: null,
-        center: null,
-    };
-    function onMapApiReady() {
-        map.apiReady = true;
-    }
-    function setCenterPlace(place) {
-        setCenter(place.geometry);
-        if (queryString.pass) inputLocationDialog.place = place;
-    }
-    function setCenter(geometry) {
-        map.center = geometry;
-    }
-
-    $(window).resize(onWindowResized).trigger("resize");
-    function onWindowResized() {
-        map.height = $(this).height() - 110;
-    }
-
-    function locateMe() {
-        if (navigator.geolocation) {
-            progress++;
-            navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFail);
-        }
-    }
-    function onLocateSuccess(position) {
-        progress--;
-        setCenter({
-            location: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        })
-    }
-    function onLocateFail(err) {
-        progress--;
-        console.error(err);
-    }
-
-    var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
-    progress = 0;
-    error = null;
-
-    var refreshTimer = null;
-    function refreshPlaces() {
-        clearTimeout(refreshTimer);
-        refreshTimer = setTimeout(refreshPlacesNow, 500);
-    }
-    function refreshPlacesNow() {
-        progress++;
-        $.ajax({
-            url: serviceUrl + "/get-test-locations",
-            data: {
-                northEast: map.bounds.getNorthEast().toJSON(),
-                southWest: map.bounds.getSouthWest().toJSON(),
-                myLocation: map.center.location.toJSON()
-            },
-            dataType: "json",
-            success: function(result) {
-                map.places = result.sort(function(a,b) {return a.distance-b.distance});
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                error = {message: xhr.responseText || errorThrown || textStatus};
-            },
-            complete: function() {
-                progress--;
-            }
-        })
-    }
-
-    addLocationDialog = {
-        visible: false
-    }
-
-    discussionDialog = {
-        place: null,
-        visible: false
-    }
-    function joinDiscussion(place) {
-        discussionDialog.place = place;
-        discussionDialog.visible = true;
-    }
-    function showDirections(place) {
-        window.open("https://www.google.com/maps/dir/?api=1&destination=" + place.lat + "," + place.lng, "_blank");
-    }
-
-    inputLocationDialog = {
-        place: null,
-        visible: false
-    }
-
-    function startup() {
-        if (queryString.co) {
-            var coords = queryString.co.split(",");
-            setCenter({
-                location: new google.maps.LatLng(coords[0], coords[1]),
-                viewport: new google.maps.LatLngBounds(
-                    new google.maps.LatLng(coords[2], coords[3]),
-                    new google.maps.LatLng(coords[4], coords[5])
-                )
-            })
-        }
-        else locateMe();
-    }
-
-    function shareTwitter() {
-        var url = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(getUrlForSharing()) + "&text=" + encodeURIComponent("COVID-19 Testing Locations");
-        window.open(url, "_blank");
-    }
-    function shareFacebook() {
-        FB.ui({method: "share", href: getUrlForSharing()}, function() {});
-    }
-    function getUrlForSharing() {
-        var base = location.href.split("?")[0];
-        if (map.center) {
-            var viewport = map.bounds.toJSON();
-            var coords = [
-                map.center.location.lat(),
-                map.center.location.lng(),
-                viewport.south,
-                viewport.west,
-                viewport.north,
-                viewport.east
-            ];
-            return base + "?co=" + coords.join(",");
-        }
-        else return base;
-    }
-
-    tags = null;
-    tagMap = null;
-    $.get(serviceUrl + "/get-tags", function(result) {
-        tags = result;
-        tagMap = {};
-        for (var i=0; i<tags.length; i++) tagMap[tags[i].id] = tags[i].name;
-    })
-</script>
+<!-- Google Maps -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6bPXQ8LQBegMEIuXVNy04vgjYyQ6j1Lo&libraries=places&callback=onMapApiReady"></script>
 
+<!-- Facebook -->
 <script>
     window.fbAsyncInit = function() {
         FB.init({
@@ -315,6 +152,14 @@
     };
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+<!-- this page -->
+<script>
+    $(window).resize(onWindowResized).trigger("resize");
+    function onWindowResized() {
+        map.height = $(this).height() - 110;
+    }
+</script>
 
 </body>
 </html>

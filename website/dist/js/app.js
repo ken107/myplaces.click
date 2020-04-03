@@ -7,43 +7,21 @@ $(function () {
         setTimeout(function () {
             $(".page_loader").fadeOut("fast");
         }, 100);
-
-        if ($('body .filter-portfolio').length > 0) {
-            $(function () {
-                $('.filter-portfolio').filterizr(
-                    {
-                        delay: 0
-                    }
-                );
-            });
-            $('.filteriz-navigation li').on('click', function () {
-                $('.filteriz-navigation .filtr').removeClass('active');
-                $(this).addClass('active');
-            });
-        }
     });
-
-
-    // Made the left sidebar's min-height to window's height
-    var winHeight = $(window).height();
-    $('.dashboard-nav').css('min-height', winHeight);
 
 
     // Header shrink while page scroll
     adjustHeader();
     doSticky();
-    placedDashboard();
     $(window).on('scroll', function () {
         adjustHeader();
         doSticky();
-        placedDashboard();
     });
 
     // Header shrink while page resize
     $(window).on('resize', function () {
         adjustHeader();
         doSticky();
-        placedDashboard();
     });
 
     function adjustHeader()
@@ -85,11 +63,6 @@ $(function () {
             $('.do-sticky').removeClass('sticky-header');
             //$('.do-sticky').removeClass('header-shrink');
         }
-    }
-
-    function placedDashboard() {
-        var headerHeight = parseInt($('.main-header').height(), 10);
-        $('.dashboard').css('top', headerHeight);
     }
 
 
@@ -153,11 +126,6 @@ $(function () {
         }
     });
 
-    var videoWidth = $('.sidebar-widget').width();
-    var videoHeight = videoWidth * .61;
-    $('.sidebar-widget iframe').css('height', videoHeight);
-
-
     // Megamenu activation
     $(".megamenu").on("click", function (e) {
         e.stopPropagation();
@@ -210,7 +178,6 @@ $(function () {
 // mCustomScrollbar initialization
 (function ($) {
     $(window).resize(function () {
-        $('#map').css('height', $(this).height() - 110);
         if ($(this).width() > 768) {
             $(".map-content-sidebar").mCustomScrollbar(
                 {theme: "minimal-dark"}
@@ -222,3 +189,22 @@ $(function () {
         }
     }).trigger("resize");
 })(jQuery);
+
+
+
+var queryString = {};
+if (location.search) {
+    location.search.substr(1).split('&').forEach(function(token) {
+        var pair = token.split('=');
+        queryString[decodeURIComponent(pair[0])] = pair.length > 1 ? decodeURIComponent(pair[1]) : true;
+    })
+}
+
+$("<div>").load("components.html", function() {
+    $(this).children().each(function() {
+        var className = $(this).data("class");
+        dataBinder.views[className] = {template: this, controller: window[className]};
+    })
+})
+
+var serviceUrl = location.hostname == "localhost" ? "http://localhost:8081" : "/webservices";
