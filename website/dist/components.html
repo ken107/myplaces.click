@@ -241,6 +241,9 @@
             </div>
             <form bind-statement-1="if (#place) this.populate(thisElem, #place)" bind-event-submit="this.submit(thisElem); return false">
                 <div class="modal-body">
+                    <div class="text-muted mb-3" style="font-size: smaller">
+                        <u>HINT</u>: search for a location to prepopulate this form.
+                    </div>
                     <input type="text" name="name" class="form-control" placeholder="Location Name*">
                     <input type="text" name="address" class="form-control" placeholder="Address">
                     <input type="text" name="address2" class="form-control" placeholder="Address Line 2">
@@ -256,12 +259,38 @@
                     <label class="form-check form-check-inline" bind-repeater-i="#tags.length" bind-var-tag="#tags[#i]">
                         <input class="form-check-input" type="checkbox" bind-statement-1="$(thisElem).attr('name', 'tag-'+#tag.id)"> {{#tag.name}}
                     </label>
-                    <div class="alert alert-danger" bind-statement-1="$(thisElem).toggle(!!#error)">{{#error.message}}</div>
                 </div>
                 <div class="modal-footer">
+                    <div class="mr-auto" style="color: red;" bind-statement-1="$(thisElem).toggle(!!#error)">{{#error.message}}</div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div data-class="EmbedDialog" class="embed-dialog modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    bind-statement-2="$(thisElem).modal(#visible ? 'show' : 'hide')"
+    bind-event-hidden.bs.modal="#visible = false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">Embed Map</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group text-muted" style="font-size: smaller;">
+                    Copy the paste the code below into your website. Adjust the width and height of the IFrame as you require.
+                </div>
+                <textarea class="form-control" rows="5" bind-statement-1="if (#visible) thisElem.value = this.getCode()"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" bind-event-click="this.copyCode()">Copy to Clipboard</button>
+            </div>
         </div>
     </div>
 </div>

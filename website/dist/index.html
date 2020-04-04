@@ -48,7 +48,7 @@
         <div bind-view="NavBar"
             bind-event-share-twitter="this.shareTwitter()"
             bind-event-share-facebook="this.shareFacebook()"
-            bind-event-add-location="if (queryString.pass) #inputLocationDialog.visible = true; else #addLocationDialog.visible = true"></div>
+            bind-event-add-location="this.showInputLocationDialog(#map.centerPlace)"></div>
     </div>
 </header>
 <!-- Main header end -->
@@ -96,8 +96,9 @@
 <!-- Map content end -->
 
 <!-- Footer -->
-<div class="text-right">
-    <a class="mt-1 mr-4" style="font-size: smaller" target="_blank" href="https://lsdsoftware.com/contact.html?subject=testingmap">contact us</a>
+<div class="text-right pt-1" style="font-size: smaller">
+    <a class="mr-3" bind-event-click="this.showEmbedDialog()">embed map</a>
+    <a class="mr-4" target="_blank" href="https://lsdsoftware.com/contact.html?subject=testingmap">contact us</a>
 </div>
 
 <!-- Dialogs -->
@@ -108,6 +109,8 @@
     bind-param-place="#inputLocationDialog.place"
     bind-param-tags="#tags"
     bind-event-location-added="this.refreshPlacesNow()"></div>
+<div bind-view="EmbedDialog"
+    bind-param-visible="#embedDialog.visible"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

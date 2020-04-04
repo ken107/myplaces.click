@@ -41,6 +41,7 @@ function TheMap(viewRoot) {
             center: new google.maps.LatLng(0, 0),
             zoom: 2,
             fullscreenControl: false,
+            gestureHandling: "greedy",
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -110,6 +111,10 @@ function TheMap(viewRoot) {
         $('<button type="button" class="btn btn-primary mr-1"><i class="material-icons">directions</i></button>').click(showDirections).appendTo(buttons);
         $('<button type="button" class="btn btn-secondary mr-1"><i class="material-icons">forum</i></button>').click(joinDiscussion).appendTo(buttons);
         if (place.phone) $('<a class="btn btn-success mr-1"><i class="material-icons">local_phone</i></a>').attr('href', 'tel:'+place.phone).appendTo(buttons);
+
+        var source = $("<div class='mt-2 text-muted font-italic'>").appendTo(div);
+        $("<span>").text("source: ").appendTo(source);
+        $("<a>").attr("target", "_blank").attr("href", place.sourceUrl).text(place.source).css("text-decoration", "underline").appendTo(source);
         return div;
     }
 }
@@ -166,7 +171,8 @@ function InputLocationDialog(viewRoot) {
         if (place.address_components) for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
         form.name.value = place.name;
         form.address.value = [addr.street_number, addr.route].filter(function(x) {return x}).join(" ");
-        form.city.value = addr.locality || "";
+        form.address2.value = "";
+        form.city.value = addr.locality || addr.sublocality || "";
         form.state.value = addr.administrative_area_level_1 || "";
         form.postalCode.value = addr.postal_code || "";
         form.countryCode.value = addr.country || "";
@@ -192,12 +198,13 @@ function InputLocationDialog(viewRoot) {
             sourceUrl: form.sourceUrl.value,
             tagIds: this.tags.filter(function(x) {return form["tag-"+x.id].checked}).map(function(x) {return x.id}),
         };
-        if (!data.name) return error = {message: "Missing name"};
-        if (!data.lat) return error = {message: "Missing lat"};
-        if (!data.lng) return error = {message: "Missing lng"};
-        if (!data.source) return error = {message: "Missing source"};
-        if (!data.sourceUrl) return error = {message: "Missing source URL"};
+        if (!data.name) return this.error = {message: "Missing name"};
+        if (!data.lat) return this.error = {message: "Missing lat"};
+        if (!data.lng) return this.error = {message: "Missing lng"};
+        if (!data.source) return this.error = {message: "Missing source"};
+        if (!data.sourceUrl) return this.error = {message: "Missing source URL"};
         this.progress++;
+        this.error = null;
         $.ajax({
             method: "POST",
             url: serviceUrl + "/add-test-location",
@@ -217,5 +224,23 @@ function InputLocationDialog(viewRoot) {
     }
     function onComplete() {
         this.progress--;
+    }
+}
+
+
+
+function EmbedDialog(viewRoot) {
+    this.getCode = function() {
+        return "<iframe style='width:500px; height:500px;' src='" + getUrlForSharing(true) + "'></iframe>";
+    }
+    this.copyCode = function() {
+        try {
+            $(viewRoot).find("textarea").get(0).select();
+            if (!document.execCommand('copy')) throw "fail";
+            this.visible = false;
+        }
+        catch (err) {
+            this.error = {message: "Failed, please copy manually"};
+        }
     }
 }

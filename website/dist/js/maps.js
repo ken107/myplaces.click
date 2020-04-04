@@ -3,6 +3,7 @@ map = {
     apiReady: false,
     bounds: null,
     places: null,
+    centerPlace: null,
     center: null,
     progress: 0,
     error: null,
@@ -11,8 +12,8 @@ function onMapApiReady() {
     map.apiReady = true;
 }
 function setCenterPlace(place) {
+    map.centerPlace = place;
     setCenter(place.geometry);
-    if (queryString.pass) inputLocationDialog.place = place;
 }
 function setCenter(geometry) {
     map.center = geometry;
@@ -82,6 +83,17 @@ inputLocationDialog = {
     place: null,
     visible: false
 }
+function showInputLocationDialog(place) {
+    inputLocationDialog.place = place;
+    inputLocationDialog.visible = true;
+}
+
+embedDialog = {
+    visible: false
+}
+function showEmbedDialog() {
+    embedDialog.visible = true;
+}
 
 function startup() {
     if (queryString.co) {
@@ -104,8 +116,8 @@ function shareTwitter() {
 function shareFacebook() {
     FB.ui({method: "share", href: getUrlForSharing()}, function() {});
 }
-function getUrlForSharing() {
-    var base = location.href.split("?")[0];
+function getUrlForSharing(embed) {
+    var base = embed ? (location.protocol + "//" + location.host + "/embedded.html") : location.href.split("?")[0];
     if (map.center) {
         var viewport = map.bounds.toJSON();
         var coords = [
