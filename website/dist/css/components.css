@@ -60,7 +60,7 @@
 
 
 
-.input-location-dialog .modal-body > input {
+.input-location-dialog .form-group > input {
     display: block;
-    margin-bottom: .5em;
+    margin-bottom: .35rem;
 }

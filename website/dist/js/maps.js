@@ -84,8 +84,13 @@ inputLocationDialog = {
     visible: false
 }
 function showInputLocationDialog(place) {
+    if (!place) return alert("Please search for the location first.");
     inputLocationDialog.place = place;
     inputLocationDialog.visible = true;
+}
+function onLocationAdded() {
+    inputLocationDialog.place = null;
+    refreshPlacesNow();
 }
 
 embedDialog = {
