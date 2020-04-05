@@ -64,7 +64,7 @@ function TheMap(viewRoot) {
         var newMarkers = {};
         places.forEach(function(place, index) {
             newMarkers[place.id] = placeMarkers[place.id] || newMarker(place);
-            newMarkers[place.id].setLabel("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index));
+            newMarkers[place.id].setLabel("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index) || "●");
         })
         for (var id in placeMarkers) {
             if (!newMarkers[id]) {

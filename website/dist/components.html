@@ -26,7 +26,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link link-color link-color-2 mt-0" bind-event-click="$(#viewRoot).triggerHandler('add-location')">
-                    <i class="flaticon-plus"></i> Add Location
+                    <i class="material-icons">add</i> Add Location
                 </a>
             </li>
         </ul>
@@ -132,7 +132,7 @@
     <div class="card bg-light mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
         <div class="card-body">
             <div class="ml-2 pull-right text-right">
-                <div class="pin" bind-statement-1="this.setPinIcon(thisElem, #place)">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
+                <div class="pin" bind-statement-1="this.setPinIcon(thisElem, #place)">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i) || "●"}}</div>
                 <div>{{printDistance(#place.distance, true)}}</div>
             </div>
             <h5 class="card-title">
