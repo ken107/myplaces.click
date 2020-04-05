@@ -106,7 +106,15 @@ function startup() {
             )
         })
     }
-    else locateMe();
+    else {
+        setCenter({
+            location: new google.maps.LatLng(37.09024, -95.712891),
+            viewport: new google.maps.LatLngBounds(
+                new google.maps.LatLng(5.100253434039721, -143.16576293945312),
+                new google.maps.LatLng(61.52715099213155, -48.164237060546874)
+            )
+        })
+    }
 }
 
 function shareTwitter() {
@@ -140,3 +148,9 @@ $.get(serviceUrl + "/get-tags", function(result) {
     tagMap = {};
     for (var i=0; i<tags.length; i++) tagMap[tags[i].id] = tags[i].name;
 })
+
+function printDistance(meters, abbreviateUnit) {
+    var miles = meters / 1609.34;
+    if (miles > 150) return "";
+    return Number(miles).toFixed(1) + (abbreviateUnit ? " mi" : " miles");
+}

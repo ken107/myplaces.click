@@ -1,11 +1,4 @@
 
-function printDistance(meters, abbreviateUnit) {
-    return Number(meters / 1609.34).toFixed(1) + (abbreviateUnit ? " mi" : " miles");
-}
-
-
-
-
 function NavBar() {
 }
 
@@ -38,8 +31,6 @@ function TheMap(viewRoot) {
     this.mapReady = false;
     this.init = function(elem) {
         map = new google.maps.Map(elem, {
-            center: new google.maps.LatLng(0, 0),
-            zoom: 2,
             fullscreenControl: false,
             gestureHandling: "greedy",
             mapTypeControl: true,
