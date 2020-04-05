@@ -28,7 +28,8 @@ async function getTestLocations(northEast, southWest, myLocation) {
             ST_Longitude(lngLat) AS lng,
             ST_Distance(lngLat, ST_SRID(POINT(?,?), 4326)) AS distance,
             source,
-            sourceUrl
+            sourceUrl,
+            isVerified
         FROM
             testLocations
         WHERE

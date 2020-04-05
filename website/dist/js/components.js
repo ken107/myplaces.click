@@ -85,7 +85,11 @@ function TheMap(viewRoot) {
     function newMarker(place) {
         var marker = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(place.lat, place.lng)
+            position: new google.maps.LatLng(place.lat, place.lng),
+            icon: {
+                url: place.isVerified ? "/img/spotlight-poi-dotless2.png" : "/img/poi-dotless-yellow.png",
+                labelOrigin: new google.maps.Point(13, 14),
+            },
         })
         marker.addListener('click', function() {
             infoWindow.setContent(getInfoWindowContent(place));
@@ -101,7 +105,10 @@ function TheMap(viewRoot) {
             $(viewRoot).triggerHandler("show-directions", place);
         }
         var div = $("<div>").get(0);
-        $("<h6>").text(place.name).appendTo(div);
+        var title = $("<h6>").appendTo(div);
+        $("<span>").text(place.name).appendTo(title);
+        if (!place.isVerified) $("<small>").text(" (unverified)").appendTo(title);
+
         if (place.address) $("<div>").text(place.address).appendTo(div);
         if (place.address2) $("<div>").text(place.address2).appendTo(div);
         if (place.city || place.state) $("<div>").text(place.city + (place.city && place.state ? ", " : "") + place.state + " " + place.postalCode).appendTo(div);
@@ -130,6 +137,10 @@ function LocationDetails(viewRoot) {
     }
     this.printTags = function(tagIds, tagMap) {
         if (tagIds && tagMap) return tagIds.map(function(x) {return tagMap[x]}).join(", ");
+    }
+    this.setPinIcon = function(elem, place) {
+        var img = place.isVerified ? "/img/spotlight-poi-dotless2.png" : "/img/poi-dotless-yellow.png";
+        $(elem).css("background-image", "url(" + img + ")");
     }
 }
 
@@ -176,7 +187,7 @@ function InputLocationDialog(viewRoot) {
         form.state.value = addr.administrative_area_level_1 || "";
         form.postalCode.value = addr.postal_code || "";
         form.countryCode.value = addr.country || "";
-        form.phone.value = place.formatted_phone_number || "";
+        form.phone.value = "";
         form.lat.value = place.geometry.location.lat();
         form.lng.value = place.geometry.location.lng();
     }

@@ -132,10 +132,13 @@
     <div class="card bg-light mb-3" bind-repeater-i="#places.length" bind-var-place="#places[#i]">
         <div class="card-body">
             <div class="ml-2 pull-right text-right">
-                <div class="pin">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
+                <div class="pin" bind-statement-1="this.setPinIcon(thisElem, #place)">{{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(#i)}}</div>
                 <div>{{printDistance(#place.distance, true)}}</div>
             </div>
-            <h5 class="card-title">{{#place.name}}</h5>
+            <h5 class="card-title">
+                {{#place.name}}
+                <small bind-statement-1="$(thisElem).toggle(!#place.isVerified)">(unverified)</small>
+            </h5>
             <div class="card-text">
                 <div>{{#place.address}}</div>
                 <div>{{#place.address2}}</div>
