@@ -105,3 +105,7 @@ export async function insertTestLocation(item: TestLocationDAO): Promise<void> {
 export async function insertUserSubmission(source: string, email: string): Promise<void> {
     await con.execute("INSERT INTO userSubmissions (source, email) VALUES (?, ?)", [source, email]);
 }
+
+export async function insertContactUs(email: string, message: string): Promise<void> {
+    await con.execute("INSERT INTO contactUs (email, message) VALUES (?, ?)", [email, message]);
+}

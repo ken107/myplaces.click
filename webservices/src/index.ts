@@ -16,6 +16,7 @@ app.get("/get-test-locations", getTestLocations);
 app.get("/get-tags", getTags);
 app.post("/add-test-location", addTestLocation);
 app.post("/add-user-submission", addUserSubmission);
+app.post("/contact-us", contactUs);
 const server = app.listen(config.port, () => console.log("Server started on", config.port));
 
 
@@ -76,6 +77,18 @@ async function addUserSubmission(req: express.Request, res: express.Response, ne
         assert(req.body.source, "Missing args");
 
         await db.insertUserSubmission(req.body.source, req.body.email);
+        res.end();
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
+async function contactUs(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+        assert(req.body.email && req.body.message, "Missing args");
+
+        await db.insertContactUs(req.body.email, req.body.message);
         res.end();
     }
     catch (err) {

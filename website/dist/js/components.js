@@ -246,3 +246,33 @@ function EmbedDialog(viewRoot) {
         }
     }
 }
+
+
+
+function ContactUsDialog() {
+    this.status = null;
+    this.submit = function(email, message) {
+        email = email.trim();
+        message = message.trim();
+        if (!email) return this.status = {type: "ERROR", message: "Missing email"};
+        if (!email.match(/^\S+@\S+$/)) return this.status = {type: "ERROR", message: "Invalid email"};
+        if (!message) return this.status = {type: "ERROR", message: "Missing message"};
+        $.ajax({
+            method: "POST",
+            url: serviceUrl + "/contact-us",
+            data: JSON.stringify({
+                email: email,
+                message: message
+            }),
+            contentType: "application/json",
+            success: onSuccess.bind(this),
+            error: onError.bind(this),
+        })
+    }
+    function onSuccess() {
+        this.status = {type: "SUCCESS", message: "We have received your message, thank you."};
+    }
+    function onError(xhr, textStatus, errorThrown) {
+        this.status = {type: "ERROR", message: xhr.responseText || errorThrown || textStatus};
+    }
+}

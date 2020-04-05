@@ -32,4 +32,5 @@ export declare function getTestLocationTags(testLocationIds: number[]): Promise<
 export declare function getTags(): Promise<TagDAO[]>;
 export declare function insertTestLocation(item: TestLocationDAO): Promise<void>;
 export declare function insertUserSubmission(source: string, email: string): Promise<void>;
+export declare function insertContactUs(email: string, message: string): Promise<void>;
 export {};

@@ -287,13 +287,48 @@
             </div>
             <div class="modal-body">
                 <div class="form-group text-muted" style="font-size: smaller;">
-                    Copy the paste the code below into your website. Adjust the width and height of the IFrame as you require.
+                    Copy and paste the code below into your website. Adjust the width and height of the IFrame as you require.
                 </div>
                 <textarea class="form-control" rows="5" bind-statement-1="if (#visible) thisElem.value = this.getCode()"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" bind-event-click="this.copyCode()">Copy to Clipboard</button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div data-class="ContactUsDialog" class="contact-us-dialog modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    bind-statement-1="if (#visible) #status = null"
+    bind-statement-2="$(thisElem).modal(#visible ? 'show' : 'hide')"
+    bind-event-hidden.bs.modal="#visible = false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">Contact Us</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form bind-statement-1="if (#visible) thisElem.message.value = ''"
+                bind-event-submit="this.submit(thisElem.email.value, thisElem.message.value); return false">
+                <div class="modal-body">
+                    <div class="form-group">
+                        Email
+                        <input class="form-control" type="text" name="email">
+                    </div>
+                    <div class="form-group">
+                        Message
+                        <textarea class="form-control" rows="6" name="message"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="mr-auto" bind-statement-1="$(thisElem).toggle(!!#status).css('color', #status.type == 'SUCCESS' ? 'green' : 'red')">{{#status.message}}</div>
+                    <button type="submit" class="btn btn-primary" bind-statement-1="$(thisElem).toggle(#status.type != 'SUCCESS')">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

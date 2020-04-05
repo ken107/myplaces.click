@@ -79,3 +79,7 @@ async function insertUserSubmission(source, email) {
     await con.execute("INSERT INTO userSubmissions (source, email) VALUES (?, ?)", [source, email]);
 }
 exports.insertUserSubmission = insertUserSubmission;
+async function insertContactUs(email, message) {
+    await con.execute("INSERT INTO contactUs (email, message) VALUES (?, ?)", [email, message]);
+}
+exports.insertContactUs = insertContactUs;

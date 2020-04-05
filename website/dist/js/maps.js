@@ -95,6 +95,13 @@ function showEmbedDialog() {
     embedDialog.visible = true;
 }
 
+contactUsDialog = {
+    visible: false
+}
+function showContactUsDialog() {
+    contactUsDialog.visible = true;
+}
+
 function startup() {
     if (queryString.co) {
         var coords = queryString.co.split(",");

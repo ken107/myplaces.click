@@ -26,6 +26,7 @@ app.get("/get-test-locations", getTestLocations);
 app.get("/get-tags", getTags);
 app.post("/add-test-location", addTestLocation);
 app.post("/add-user-submission", addUserSubmission);
+app.post("/contact-us", contactUs);
 const server = app.listen(config_1.default.port, () => console.log("Server started on", config_1.default.port));
 function shutdown(req, res) {
     if (!req.ip.endsWith("127.0.0.1"))
@@ -77,6 +78,16 @@ async function addUserSubmission(req, res, next) {
     try {
         assert_1.default(req.body.source, "Missing args");
         await db.insertUserSubmission(req.body.source, req.body.email);
+        res.end();
+    }
+    catch (err) {
+        next(err);
+    }
+}
+async function contactUs(req, res, next) {
+    try {
+        assert_1.default(req.body.email && req.body.message, "Missing args");
+        await db.insertContactUs(req.body.email, req.body.message);
         res.end();
     }
     catch (err) {

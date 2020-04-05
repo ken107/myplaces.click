@@ -98,7 +98,7 @@
 <!-- Footer -->
 <div class="text-right pt-1" style="font-size: smaller">
     <a class="mr-3" bind-event-click="this.showEmbedDialog()">embed map</a>
-    <a class="mr-4" target="_blank" href="https://lsdsoftware.com/contact.html?subject=testingmap">contact us</a>
+    <a class="mr-4" bind-event-click="this.showContactUsDialog()">contact us</a>
 </div>
 
 <!-- Dialogs -->
@@ -111,6 +111,8 @@
     bind-event-location-added="this.refreshPlacesNow()"></div>
 <div bind-view="EmbedDialog"
     bind-param-visible="#embedDialog.visible"></div>
+<div bind-view="ContactUsDialog"
+    bind-param-visible="#contactUsDialog.visible"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
