@@ -259,6 +259,7 @@
                     <input type="text" name="lng" class="form-control" placeholder="Lng*">
                     <input type="text" name="source" class="form-control" placeholder="Source*">
                     <input type="text" name="sourceUrl" class="form-control" placeholder="Source URL*">
+                    <input type="text" name="contributorEmail" class="form-control" placeholder="Your Email">
                     <label class="form-check form-check-inline" bind-repeater-i="#tags.length" bind-var-tag="#tags[#i]">
                         <input class="form-check-input" type="checkbox" bind-statement-1="$(thisElem).attr('name', 'tag-'+#tag.id)"> {{#tag.name}}
                     </label>
@@ -316,7 +317,7 @@
                 bind-event-submit="this.submit(thisElem.email.value, thisElem.message.value); return false">
                 <div class="modal-body">
                     <div class="form-group">
-                        Email
+                        Your Email
                         <input class="form-control" type="text" name="email">
                     </div>
                     <div class="form-group">

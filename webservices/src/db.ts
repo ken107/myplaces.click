@@ -20,6 +20,7 @@ interface TestLocationDAO {
     distance: number;
     source: string;
     sourceUrl: string;
+    contributorEmail: string;
     tagIds: number[];
 }
 
@@ -80,8 +81,8 @@ export async function getTags(): Promise<TagDAO[]> {
 
 export async function insertTestLocation(item: TestLocationDAO): Promise<void> {
     const result = await con.execute(`
-        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?)`,
+        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl, contributorEmail)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?, ?)`,
         [
             item.name,
             item.address,
@@ -94,8 +95,9 @@ export async function insertTestLocation(item: TestLocationDAO): Promise<void> {
             item.lng,
             item.lat,
             item.source,
-            item.sourceUrl
-        ]);    
+            item.sourceUrl,
+            item.contributorEmail,
+        ]);
     const testLocationId: number = result.insertId;
     const placeholders = new Array(item.tagIds.length).fill("(?, ?)").join(", ");
     const values = item.tagIds.reduce((agg, x) => (agg.push(testLocationId, x), agg), []);

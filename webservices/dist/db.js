@@ -54,8 +54,8 @@ async function getTags() {
 exports.getTags = getTags;
 async function insertTestLocation(item) {
     const result = await con.execute(`
-        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?)`, [
+        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl, contributorEmail)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?, ?)`, [
         item.name,
         item.address,
         item.address2,
@@ -67,7 +67,8 @@ async function insertTestLocation(item) {
         item.lng,
         item.lat,
         item.source,
-        item.sourceUrl
+        item.sourceUrl,
+        item.contributorEmail,
     ]);
     const testLocationId = result.insertId;
     const placeholders = new Array(item.tagIds.length).fill("(?, ?)").join(", ");

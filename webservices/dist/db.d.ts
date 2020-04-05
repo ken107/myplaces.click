@@ -17,6 +17,7 @@ interface TestLocationDAO {
     distance: number;
     source: string;
     sourceUrl: string;
+    contributorEmail: string;
     tagIds: number[];
 }
 interface TagDAO {

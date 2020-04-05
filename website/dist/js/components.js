@@ -198,6 +198,7 @@ function InputLocationDialog(viewRoot) {
             lng: form.lng.value,
             source: form.source.value,
             sourceUrl: form.sourceUrl.value,
+            contributorEmail: form.contributorEmail.value,
             tagIds: this.tags.filter(function(x) {return form["tag-"+x.id].checked}).map(function(x) {return x.id}),
         };
         if (!data.name) return this.error = {message: "Missing name"};
