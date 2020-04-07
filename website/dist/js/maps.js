@@ -84,7 +84,7 @@ inputLocationDialog = {
     visible: false
 }
 function showInputLocationDialog(place) {
-    if (!place) return alert("Please search for the location first.");
+    if (!place) return alert("Please use the Search bar to locate the test location first.  You can search using the place name, such as the name of the hospital, a street address, or an intersection.");
     inputLocationDialog.place = place;
     inputLocationDialog.visible = true;
 }
