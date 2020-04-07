@@ -143,7 +143,7 @@
                 <div>{{#place.address}}</div>
                 <div>{{#place.address2}}</div>
                 <div>{{#place.city}}<span bind-statement-1="$(thisElem).toggle(!!#place.city && !!#place.state)">, </span>{{#place.state}} {{#place.postalCode}}</div>
-                <div>{{#place.phone}}</div>
+                <div bind-statement-1="$(thisElem).toggle(!!#place.phone)">Call: {{#place.phone}}</div>
             </div>
             <div class="buttons pull-right ml-2">
                 <a class="btn btn-success" bind-statement-1="if (#place.phone) $(thisElem).attr('href', 'tel:'+#place.phone).css('display', 'inline-block'); else $(thisElem).hide()">
@@ -223,7 +223,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <iframe style="width: 100%; height: 80vh" bind-statement-1="if (#place) this.showDiscussion(thisElem, #place)"></iframe>
+                <iframe style="width: 100%; height: 80vh; border: none" bind-statement-1="if (#place) this.showDiscussion(thisElem, #place)"></iframe>
             </div>
         </div>
     </div>
