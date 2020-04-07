@@ -172,7 +172,7 @@ function InputLocationDialog(viewRoot) {
         var addr = {};
         if (place.address_components) for (var comp of place.address_components) for (var type of comp.types) addr[type] = comp.short_name;
         form.name.value = place.name;
-        form.address.value = [addr.street_number, addr.route].filter(function(x) {return x}).join(" ");
+        form.address.value = [addr.street_number, addr.route].filter(function(x) {return x}).join(" ") || addr.intersection || "";
         form.address2.value = "";
         form.city.value = addr.locality || addr.sublocality || "";
         form.state.value = addr.administrative_area_level_1 || "";
