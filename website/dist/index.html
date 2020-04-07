@@ -73,6 +73,7 @@
                 bind-statement-1="$(thisElem).css('height', #map.height)"
                 bind-event-join-discussion="this.joinDiscussion(event.data)"
                 bind-event-show-directions="this.showDirections(event.data)"
+                bind-event-show-instructions="this.showInstructions(event.data)"
                 bind-event-bounds-changed="#map.bounds = event.data"></div>
         </div>
         <div class="col-lg-5 map-content-sidebar p-2 p-lg-3">
@@ -87,6 +88,7 @@
             <div bind-view="LocationDetails"
                 bind-param-places="#map.places"
                 bind-param-tag-map="#tagMap"
+                bind-event-show-instructions="this.showInstructions(event.data)"
                 bind-event-show-directions="this.showDirections(event.data)"
                 bind-event-join-discussion="this.joinDiscussion(event.data)">
             </div>
@@ -109,10 +111,9 @@
     bind-param-place="#inputLocationDialog.place"
     bind-param-tags="#tags"
     bind-event-location-added="this.onLocationAdded()"></div>
-<div bind-view="EmbedDialog"
-    bind-param-visible="#embedDialog.visible"></div>
-<div bind-view="ContactUsDialog"
-    bind-param-visible="#contactUsDialog.visible"></div>
+<div bind-view="EmbedDialog" bind-param-visible="#embedDialog.visible"></div>
+<div bind-view="ContactUsDialog" bind-param-visible="#contactUsDialog.visible"></div>
+<div bind-view="InstructionsDialog" bind-param-visible="#instructionsDialog.visible" bind-param-place="#instructionsDialog.place"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

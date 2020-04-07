@@ -107,6 +107,15 @@ function showContactUsDialog() {
     contactUsDialog.visible = true;
 }
 
+instructionsDialog = {
+    place: null,
+    visible: false
+}
+function showInstructions(place) {
+    instructionsDialog.place = place;
+    instructionsDialog.visible = true;
+}
+
 function startup() {
     if (queryString.co) {
         var coords = queryString.co.split(",");

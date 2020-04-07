@@ -59,12 +59,14 @@
         bind-param-center="#map.center"
         bind-param-places="#map.places"
         bind-param-tag-map="#tagMap"
+        bind-event-show-instructions="this.showInstructions(event.data)"
         bind-event-join-discussion="this.joinDiscussion(event.data)"
         bind-event-show-directions="this.showDirections(event.data)"
         bind-event-bounds-changed="#map.bounds = event.data"></div>
 
 <!-- Dialogs -->
 <div bind-view="DiscussionDialog" bind-param-visible="#discussionDialog.visible" bind-param-place="#discussionDialog.place"></div>
+<div bind-view="InstructionsDialog" bind-param-visible="#instructionsDialog.visible" bind-param-place="#instructionsDialog.place"></div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

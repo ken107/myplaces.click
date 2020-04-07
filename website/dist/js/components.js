@@ -95,6 +95,9 @@ function TheMap(viewRoot) {
         function showDirections() {
             $(viewRoot).triggerHandler("show-directions", place);
         }
+        function showInstructions() {
+            $(viewRoot).triggerHandler("show-instructions", place);
+        }
         var div = $("<div>").get(0);
         var title = $("<h6>").appendTo(div);
         $("<span>").text(place.name).appendTo(title);
@@ -109,6 +112,7 @@ function TheMap(viewRoot) {
         $('<button type="button" class="btn btn-primary mr-1"><i class="material-icons">directions</i></button>').click(showDirections).appendTo(buttons);
         $('<button type="button" class="btn btn-secondary mr-1"><i class="material-icons">forum</i></button>').click(joinDiscussion).appendTo(buttons);
         if (place.phone) $('<a class="btn btn-success mr-1"><i class="material-icons">local_phone</i></a>').attr('href', 'tel:'+place.phone).appendTo(buttons);
+        if (place.instructions) $('<button type="button" class="btn btn-info mr-1"><i class="material-icons">info</i></button>').click(showInstructions).appendTo(buttons);
 
         var source = $("<div class='mt-2 text-muted font-italic'>").appendTo(div);
         $("<span>").text("source: ").appendTo(source);
@@ -125,6 +129,9 @@ function LocationDetails(viewRoot) {
     }
     this.showDiscussion = function(place) {
         $(viewRoot).triggerHandler('join-discussion', place);
+    }
+    this.showInstructions = function(place) {
+        $(viewRoot).triggerHandler('show-instructions', place);
     }
     this.printTags = function(tagIds, tagMap) {
         if (tagIds && tagMap) return tagIds.map(function(x) {return tagMap[x]}).join(", ");
@@ -179,6 +186,7 @@ function InputLocationDialog(viewRoot) {
         form.postalCode.value = addr.postal_code || "";
         form.countryCode.value = addr.country || "";
         form.phone.value = "";
+        form.instructions.value = "";
         form.lat.value = place.geometry.location.lat();
         form.lng.value = place.geometry.location.lng();
     }
@@ -194,6 +202,7 @@ function InputLocationDialog(viewRoot) {
             postalCode: form.postalCode.value,
             countryCode: form.countryCode.value,
             phone: form.phone.value,
+            instructions: form.instructions.value,
             lat: form.lat.value,
             lng: form.lng.value,
             source: form.source.value,
@@ -276,4 +285,9 @@ function ContactUsDialog() {
     function onError(xhr, textStatus, errorThrown) {
         this.status = {type: "ERROR", message: xhr.responseText || errorThrown || textStatus};
     }
+}
+
+
+
+function InstructionsDialog() {
 }
