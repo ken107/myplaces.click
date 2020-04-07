@@ -29,6 +29,7 @@ async function getTestLocations(northEast, southWest, myLocation) {
             ST_Distance(lngLat, ST_SRID(POINT(?,?), 4326)) AS distance,
             source,
             sourceUrl,
+            instructions,
             isVerified
         FROM
             testLocations
@@ -54,8 +55,8 @@ async function getTags() {
 exports.getTags = getTags;
 async function insertTestLocation(item) {
     const result = await con.execute(`
-        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl, contributorEmail)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?, ?)`, [
+        INSERT INTO testLocations (name, address, address2, city, state, postalCode, countryCode, phone, lngLat, source, sourceUrl, contributorEmail, instructions)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ST_SRID(POINT(?,?), 4326), ?, ?, ?, ?)`, [
         item.name,
         item.address,
         item.address2,
@@ -69,6 +70,7 @@ async function insertTestLocation(item) {
         item.source,
         item.sourceUrl,
         item.contributorEmail,
+        item.instructions,
     ]);
     const testLocationId = result.insertId;
     const placeholders = new Array(item.tagIds.length).fill("(?, ?)").join(", ");

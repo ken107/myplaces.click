@@ -19,6 +19,7 @@ interface TestLocationDAO {
     sourceUrl: string;
     contributorEmail: string;
     tagIds: number[];
+    instructions: string;
 }
 interface TagDAO {
     id: number;
