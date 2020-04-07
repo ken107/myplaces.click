@@ -245,15 +245,14 @@
             <form bind-statement-1="if (#place) this.populate(thisElem, #place)" bind-event-submit="this.submit(thisElem); return false">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" name="address" class="form-control" placeholder="Address">
-                        <div class="d-flex">
-                            <input type="text" name="city" class="form-control mr-1" style="flex: 4" placeholder="City">
-                            <input type="text" name="state" class="form-control mr-1" style="flex: 2" placeholder="State / Province">
-                            <input type="text" name="postalCode" class="form-control mr-1" style="flex: 2" placeholder="Postal Code">
-                            <input type="text" name="countryCode" class="form-control" style="flex: 1" placeholder="Country Code">
-                        </div>
+                        {{#place.formatted_address}}
                     </div>
                     <div class="form-group">
+                        <input type="hidden" name="address" class="form-control" placeholder="Address">
+                        <input type="hidden" name="city" class="form-control" placeholder="City">
+                        <input type="hidden" name="state" class="form-control" placeholder="State / Province">
+                        <input type="hidden" name="postalCode" class="form-control" placeholder="Postal Code">
+                        <input type="hidden" name="countryCode" class="form-control" placeholder="Country Code">
                         <input type="hidden" name="lat" class="form-control" placeholder="Lat*">
                         <input type="hidden" name="lng" class="form-control" placeholder="Lng*">
 
