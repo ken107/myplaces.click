@@ -1,10 +1,10 @@
 {
   "name": "website",
   "version": "1.0.0",
-  "description": "testmap main website",
+  "description": "myplaces.click main website",
   "scripts": {
     "start": "http-server dist",
-    "deploy": "rsync -avz --delete dist/ testingmap.com:htdocs/"
+    "deploy": "aws s3 sync --delete --metadata-directive REPLACE --cache-control max-age=86400,public dist s3://lsdsoftware-websites/myplaces.click"
   },
   "license": "ISC"
 }
